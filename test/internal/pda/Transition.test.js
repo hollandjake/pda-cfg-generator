@@ -8,7 +8,7 @@ test('Construct new Transition', () => {
     let fromState = State.q0;
     let toState = State.q0;
     let input = PDASymbol.of("a");
-    let stackHead = StackSymbol.EMPTY_STACK;
+    let stackHead = PDASymbol.of("A");
     let stackPush = StackSymbol.EMPTY_STACK;
 
     let transition = new Transition(fromState, toState, input, stackHead, stackPush);

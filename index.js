@@ -24,3 +24,5 @@ console.log(PDA.fromTransitions([
         PDASymbol.of("A")
     )
 ]).toString())
+
+console.log(CFG.fromString("A->aB,A->b\nB->b").toString());
