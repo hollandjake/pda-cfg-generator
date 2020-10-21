@@ -77,7 +77,7 @@ export default class PDA {
             throw new Error("Start start not found in transition states");
         }
 
-        return new PDA(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates)
+        return new PDA(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates);
     }
 
     /* istanbul ignore next */

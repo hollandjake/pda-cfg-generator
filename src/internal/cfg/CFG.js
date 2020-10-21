@@ -2,7 +2,6 @@ import Symbol from "../Symbol.js";
 import ArrayHelper from "../helper/ArrayHelper.js";
 import Variable from "./Variable.js";
 import Terminal from "./Terminal.js";
-import CFGSymbol from "./CFGSymbol.js";
 import Rule from "./Rule.js";
 
 export default class CFG {
@@ -55,6 +54,8 @@ export default class CFG {
                     variables.push(symbol);
                 } else if (symbol instanceof Terminal) {
                     terminals.push(symbol);
+                } else {
+                    throw new Error("One of the Rule's outputList elements isn't supported, please use 'Terminal' or  'Variable'");
                 }
             })
         })
@@ -63,7 +64,7 @@ export default class CFG {
             throw new Error("Start variable not found in variables");
         }
 
-        return new CFG(variables, terminals, rules, startVariable)
+        return new CFG(variables, terminals, rules, startVariable);
     }
 
     /**
@@ -79,7 +80,7 @@ export default class CFG {
         if (inputString !== null && inputString.length > 0) {
             let ruleStrings = inputString.split(/[,\n]/);
 
-            let rules = ruleStrings.map(rule => Rule.fromString(rule))
+            let rules = ruleStrings.map(rule => Rule.fromString(rule)).filter(rule => rule !== null);
 
             if (rules.length > 0) {
                 let startVariable = rules[0].inputVariable;

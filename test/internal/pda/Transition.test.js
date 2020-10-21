@@ -21,55 +21,55 @@ test('Construct new Transition', () => {
 
 test('Expect error when creating a Transition with null fromState', () => {
     expect(() => {
-        new Transition(null, null, null,null,null);
+        new Transition(null, null, null, null, null);
     }).toThrowError();
 });
 
 test('Expect error when creating a Transition with non State fromState', () => {
     expect(() => {
-        new Transition({id:1}, null,null,null,null);
+        new Transition({id: 1}, null, null, null, null);
     }).toThrowError();
 });
 
 test('Expect error when creating a Transition with null toState', () => {
     expect(() => {
-        new Transition(State.q0, null, null,null,null);
+        new Transition(State.q0, null, null, null, null);
     }).toThrowError();
 });
 
 test('Expect error when creating a Transition with non State toState', () => {
     expect(() => {
-        new Transition(State.q0, {id: 1},null,null,null);
+        new Transition(State.q0, {id: 1}, null, null, null);
     }).toThrowError();
 });
 
 test('Expect error when creating a Transition with null input', () => {
     expect(() => {
-        new Transition(State.q0, State.q0, null,null,null);
+        new Transition(State.q0, State.q0, null, null, null);
     }).toThrowError();
 });
 
 test('Expect error when creating a Transition with non InputSymbol input', () => {
     expect(() => {
-        new Transition(State.q0, State.q0, {id: 1},null,null);
+        new Transition(State.q0, State.q0, {id: 1}, null, null);
     }).toThrowError();
 });
 
 test('Expect error when creating a Transition with null stackHead', () => {
     expect(() => {
-        new Transition(State.q0, State.q0, InputSymbol.EPSILON,null,null);
+        new Transition(State.q0, State.q0, InputSymbol.EPSILON, null, null);
     }).toThrowError();
 });
 
 test('Expect error when creating a Transition with non Symbol stackHead', () => {
     expect(() => {
-        new Transition(State.q0, State.q0, InputSymbol.EPSILON, {id: 1},null);
+        new Transition(State.q0, State.q0, InputSymbol.EPSILON, {id: 1}, null);
     }).toThrowError();
 });
 
 test('Expect error when creating a Transition with null stackPush', () => {
     expect(() => {
-        new Transition(State.q0, State.q0, InputSymbol.EPSILON, StackSymbol.EMPTY_STACK,null);
+        new Transition(State.q0, State.q0, InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, null);
     }).toThrowError();
 });
 

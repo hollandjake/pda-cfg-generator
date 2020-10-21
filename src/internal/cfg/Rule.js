@@ -20,6 +20,14 @@ export default class Rule {
         this._outputList = outputList;
     }
 
+    get inputVariable() {
+        return this._inputVariable;
+    }
+
+    get outputList() {
+        return this._outputList;
+    }
+
     /**
      * Parse a {Rule} from a string using the format <Variable> -> <Variable|Terminal>*
      * @param {String} ruleString
@@ -44,17 +52,8 @@ export default class Rule {
         return null;
     }
 
-
-    get inputVariable() {
-        return this._inputVariable;
-    }
-
-    get outputList() {
-        return this._outputList;
-    }
-
     /* istanbul ignore next */
     toString() {
-        return `${this._inputVariable} → ${this.outputList.map(s => s.id).join('')}`
+        return `${this._inputVariable} → ${this.outputList.map(s => s.id).join('')}`;
     }
 }
