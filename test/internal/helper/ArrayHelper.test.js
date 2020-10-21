@@ -1,9 +1,5 @@
 import ArrayHelper from "../../../src/internal/helper/ArrayHelper.js";
 
-test('Object.equals [NULL,NULL]', () => {
-    ArrayHelper.Oj
-})
-
 test('push_unique with array', () => {
     let array = [0, 1, 2, 3];
     let target = [0, 1, 2, 3];

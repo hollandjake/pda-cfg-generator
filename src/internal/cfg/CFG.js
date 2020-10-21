@@ -1,8 +1,7 @@
-import Terminal from "./Terminal.js";
-import Variable from "./Variable.js";
 import Symbol from "../Symbol.js";
 import ArrayHelper from "../helper/ArrayHelper.js";
-import CFGSymbol from "./CFGSymbol.js";
+import Variable from "./Variable.js";
+import Terminal from "./Terminal.js";
 
 export default class CFG {
     /**
@@ -43,7 +42,7 @@ export default class CFG {
      * @param {Variable} startVariable
      * @return CFG
      */
-    static fromRules(rules, startVariable = CFGSymbol.S) {
+    static fromRules(rules, startVariable = Variable.S) {
         let variables = [];
         let terminals = [];
 

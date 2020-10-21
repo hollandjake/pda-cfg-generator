@@ -1,13 +1,14 @@
 import ArrayHelper from "../helper/ArrayHelper.js";
 import State from "./State.js";
 import Symbol from "../Symbol.js";
-import {PDASymbol} from "./PDASymbol.js";
+import InputSymbol from "./InputSymbol.js";
+import StackSymbol from "./StackSymbol.js";
 
 export default class PDA {
     /**
      * @param {State[]} states (Q)
-     * @param {Symbol[]} inputAlphabet (Σ)
-     * @param {Symbol[]} stackAlphabet (Γ)
+     * @param {InputSymbol[]} inputAlphabet (Σ)
+     * @param {StackSymbol[]} stackAlphabet (Γ)
      * @param {Transition[]} transitions (δ)
      * @param {State} startState (q0)
      * @param {State[]} acceptStates (F)
@@ -60,7 +61,7 @@ export default class PDA {
     static fromTransitions(transitions, startState = State.q0) {
         let states = [];
         let inputAlphabet = [];
-        let stackAlphabet = [PDASymbol.EMPTY_STACK];
+        let stackAlphabet = [StackSymbol.EMPTY_STACK];
         let acceptStates = [];
 
         ArrayHelper.distinct(transitions).forEach(transition => {

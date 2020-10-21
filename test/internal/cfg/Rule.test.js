@@ -1,9 +1,8 @@
 import Rule from "../../../src/internal/cfg/Rule.js";
 import Variable from "../../../src/internal/cfg/Variable.js";
-import CFGSymbol from "../../../src/internal/cfg/CFGSymbol.js";
 
 test('Construct new Rule', () => {
-    let S = new Variable("S");
+    let S = Variable.S;
     let outputList = [S];
     let newRule = new Rule(S, outputList);
     expect(newRule.inputVariable).toBe(S);
@@ -24,18 +23,18 @@ test('Expect error when creating a Rule with non Variable inputVariable', () => 
 
 test('Expect error when creating a Rule with null outputList', () => {
     expect(() => {
-        new Rule(CFGSymbol.S, null)
+        new Rule(Variable.S, null)
     }).toThrowError();
 })
 
 test('Expect error when creating a Rule with non array outputList', () => {
     expect(() => {
-        new Rule(CFGSymbol.S, 1)
+        new Rule(Variable.S, 1)
     }).toThrowError();
 })
 
 test('Expect error when creating a Rule with empty outputList', () => {
     expect(() => {
-        new Rule(CFGSymbol.S, []);
+        new Rule(Variable.S, []);
     }).toThrowError();
 });

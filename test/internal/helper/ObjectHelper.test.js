@@ -1,5 +1,4 @@
 import ObjectHelper from "../../../src/internal/helper/ObjectHelper.js";
-import {test} from "@jest/globals";
 
 test('equals [NULL,NULL]', () => {
     expect(ObjectHelper.equals(null,null)).toBe(true);
