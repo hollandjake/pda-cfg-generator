@@ -45,3 +45,27 @@ test('Throws Error When Creating a CFG from rules and startVariable isnt in rule
         CFG.fromRules([], Variable.S)
     }).toThrowError();
 })
+
+test('Can parse string input', () => {
+    let cfg = CFG.fromString("A->aA,B->bB");
+    let target = CFG.fromRules([
+        new Rule(CFGSymbol.of('A'), [CFGSymbol.of('a'), CFGSymbol.of('A')]),
+        new Rule(CFGSymbol.of('B'), [CFGSymbol.of('b'), CFGSymbol.of('B')])
+    ], CFGSymbol.of('A'))
+    expect(cfg).toEqual(target);
+})
+
+test('Returns null when no rules given to string parser', () => {
+    expect(CFG.fromString("")).toBe(null);
+})
+
+test('Returns null when null given to string parser', () => {
+    expect(CFG.fromString(null)).toBe(null);
+})
+
+
+test('Expect error when parsing string input when inputVariable non Variable type', () => {
+    expect(() => {
+        CFG.fromString("a->a");
+    }).toThrowError();
+})

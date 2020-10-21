@@ -1,4 +1,5 @@
 import Variable from "./Variable.js";
+import CFGSymbol from "./CFGSymbol.js";
 
 export default class Rule {
 
@@ -17,6 +18,30 @@ export default class Rule {
 
         this._inputVariable = inputVariable;
         this._outputList = outputList;
+    }
+
+    /**
+     * Parse a {Rule} from a string using the format <Variable> -> <Variable|Terminal>*
+     * @param {String} ruleString
+     * @returns {Rule}
+     */
+    static fromString(ruleString) {
+        if (ruleString !== null && ruleString.length > 0) {
+            let [inputVariable, outputString] = ruleString.split('->');
+            inputVariable = inputVariable.trim();
+            inputVariable = CFGSymbol.of(inputVariable);
+
+            if (!(inputVariable instanceof Variable)) {
+                throw new Error(`Input for the rule '${ruleString}' is not of type 'Variable' try using an UPPERCASE letter`);
+            }
+
+            let outputs = outputString.trim().split('').map(outputChar => {
+                return CFGSymbol.of(outputChar);
+            });
+
+            return new Rule(inputVariable, outputs);
+        }
+        return null;
     }
 
 

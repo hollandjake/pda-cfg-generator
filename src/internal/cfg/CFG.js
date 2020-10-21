@@ -2,6 +2,8 @@ import Symbol from "../Symbol.js";
 import ArrayHelper from "../helper/ArrayHelper.js";
 import Variable from "./Variable.js";
 import Terminal from "./Terminal.js";
+import CFGSymbol from "./CFGSymbol.js";
+import Rule from "./Rule.js";
 
 export default class CFG {
     /**
@@ -62,6 +64,31 @@ export default class CFG {
         }
 
         return new CFG(variables, terminals, rules, startVariable)
+    }
+
+    /**
+     * Convert a string into a CFG using the following format
+     * <Rule>,<Rule>,<Rule>
+     * Or
+     * <Rule>\n<Rule>\n<Rule>
+     *
+     * @param {String} inputString
+     * @returns {CFG}
+     */
+    static fromString(inputString) {
+        if (inputString !== null && inputString.length > 0) {
+            let ruleStrings = inputString.split(/[,\n]/);
+
+            let rules = ruleStrings.map(rule => Rule.fromString(rule))
+
+            if (rules.length > 0) {
+                let startVariable = rules[0].inputVariable;
+
+                return CFG.fromRules(rules, startVariable);
+            }
+        }
+
+        return null;
     }
 
     /* istanbul ignore next */
