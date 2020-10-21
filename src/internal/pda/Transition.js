@@ -1,13 +1,14 @@
 import State from "./State.js";
-import Symbol from "../Symbol.js";
+import InputSymbol from "./InputSymbol.js";
+import StackSymbol from "./StackSymbol.js";
 
 export default class Transition {
     /**
      * @param {State} fromState
      * @param {State} toState
-     * @param {Symbol} input
-     * @param {Symbol} stackHead
-     * @param {Symbol} stackPush
+     * @param {InputSymbol} input
+     * @param {StackSymbol} stackHead
+     * @param {StackSymbol} stackPush
      */
 
     constructor(fromState, toState, input, stackHead, stackPush) {
@@ -19,16 +20,16 @@ export default class Transition {
             throw new Error("'toState' is not of type 'State'");
         }
 
-        if (input === null || typeof input !== "object" || !(input instanceof Symbol)) {
-            throw new Error("'input' is not of type 'Symbol'");
+        if (input === null || typeof input !== "object" || !(input instanceof InputSymbol)) {
+            throw new Error("'input' is not of type 'InputSymbol'");
         }
 
-        if (stackHead === null || typeof stackHead !== "object" || !(stackHead instanceof Symbol)) {
-            throw new Error("'stackHead' is not of type 'Symbol'");
+        if (stackHead === null || typeof stackHead !== "object" || !(stackHead instanceof StackSymbol)) {
+            throw new Error("'stackHead' is not of type 'StackSymbol'");
         }
 
-        if (stackPush === null || typeof stackPush !== "object" || !(stackPush instanceof Symbol)) {
-            throw new Error("'stackPush' is not of type 'Symbol'");
+        if (stackPush === null || typeof stackPush !== "object" || !(stackPush instanceof StackSymbol)) {
+            throw new Error("'stackPush' is not of type 'StackSymbol'");
         }
 
         this._fromState = fromState;

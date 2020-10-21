@@ -1,14 +1,15 @@
 import PDA from "../../../src/internal/pda/PDA.js";
 import State from "../../../src/internal/pda/State.js";
 import Transition from "../../../src/internal/pda/Transition.js";
-import {PDASymbol} from "../../../src/internal/pda/PDASymbol.js";
+import InputSymbol from "../../../src/internal/pda/InputSymbol.js";
+import StackSymbol from "../../../src/internal/pda/StackSymbol.js";
 
 test('Creates a PDA', () => {
     let acceptingState = State.q(1, true);
     let states = [State.q0, acceptingState];
-    let inputAlphabet = [PDASymbol.EPSILON];
-    let stackAlphabet = [PDASymbol.EMPTY_STACK];
-    let transitions = [new Transition(State.q0, acceptingState, PDASymbol.EPSILON, PDASymbol.EMPTY_STACK, PDASymbol.EMPTY_STACK)];
+    let inputAlphabet = [InputSymbol.EPSILON];
+    let stackAlphabet = [StackSymbol.EMPTY_STACK];
+    let transitions = [new Transition(State.q0, acceptingState, InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK)];
     let startState = State.q0;
     let acceptStates = [acceptingState];
     let pda = new PDA(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates);
@@ -48,10 +49,10 @@ test('Throws Error When Constructing PDA with non State acceptState', () => {
 test('Creates a PDA from transitions', () => {
     let acceptingState = State.q(1, true);
     let states = [State.q0, acceptingState];
-    let inputAlphabet = [PDASymbol.EPSILON];
-    let stackAlphabet = [PDASymbol.EMPTY_STACK];
+    let inputAlphabet = [InputSymbol.EPSILON];
+    let stackAlphabet = [StackSymbol.EMPTY_STACK];
     let transitions = [
-        new Transition(State.q0, acceptingState, PDASymbol.EPSILON, PDASymbol.EMPTY_STACK, PDASymbol.EMPTY_STACK)
+        new Transition(State.q0, acceptingState, InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK)
     ];
     let startState = State.q0;
     let acceptStates = [acceptingState];
