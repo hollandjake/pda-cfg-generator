@@ -2,7 +2,6 @@ import Symbol from "../Symbol.js";
 import ArrayHelper from "../helper/ArrayHelper.js";
 import Variable from "./Variable.js";
 import Terminal from "./Terminal.js";
-import CFGSymbol from "./CFGSymbol.js";
 import Rule from "./Rule.js";
 
 export default class CFG {
@@ -63,7 +62,7 @@ export default class CFG {
             throw new Error("Start variable not found in variables");
         }
 
-        return new CFG(variables, terminals, rules, startVariable)
+        return new CFG(variables, terminals, rules, startVariable);
     }
 
     /**
