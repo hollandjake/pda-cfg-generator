@@ -1,15 +1,22 @@
 import State from "../../../src/internal/pda/State.js";
 import Transition from "../../../src/internal/pda/Transition.js";
-import {PDASymbol} from "../../../src/internal/pda/PDASymbol.js";
-import Rule from "../../../src/internal/cfg/Rule.js";
-import Variable from "../../../src/internal/cfg/Variable.js";
+import InputSymbol from "../../../src/internal/pda/InputSymbol.js";
+import StackSymbol from "../../../src/internal/pda/StackSymbol.js";
+import PDASymbol from "../../../src/internal/pda/PDASymbol.js";
 
-test('Construct new Rule', () => {
-    let S = new Variable("S");
-    let outputList = [S];
-    let newRule = new Rule(S, outputList);
-    expect(newRule.inputVariable).toBe(S);
-    expect(newRule.outputList).toBe(outputList);
+test('Construct new Transition', () => {
+    let fromState = State.q0;
+    let toState = State.q0;
+    let input = PDASymbol.of("a");
+    let stackHead = StackSymbol.EMPTY_STACK;
+    let stackPush = StackSymbol.EMPTY_STACK;
+
+    let transition = new Transition(fromState, toState, input, stackHead, stackPush);
+    expect(transition.fromState).toBe(fromState);
+    expect(transition.toState).toBe(toState);
+    expect(transition.input).toBe(input);
+    expect(transition.stackHead).toBe(stackHead);
+    expect(transition.stackPush).toBe(stackPush);
 });
 
 test('Expect error when creating a Transition with null fromState', () => {
@@ -42,7 +49,7 @@ test('Expect error when creating a Transition with null input', () => {
     }).toThrowError();
 });
 
-test('Expect error when creating a Transition with non Symbol input', () => {
+test('Expect error when creating a Transition with non InputSymbol input', () => {
     expect(() => {
         new Transition(State.q0, State.q0, {id: 1},null,null);
     }).toThrowError();
@@ -50,24 +57,24 @@ test('Expect error when creating a Transition with non Symbol input', () => {
 
 test('Expect error when creating a Transition with null stackHead', () => {
     expect(() => {
-        new Transition(State.q0, State.q0, PDASymbol.EPSILON,null,null);
+        new Transition(State.q0, State.q0, InputSymbol.EPSILON,null,null);
     }).toThrowError();
 });
 
 test('Expect error when creating a Transition with non Symbol stackHead', () => {
     expect(() => {
-        new Transition(State.q0, State.q0, PDASymbol.EPSILON, {id: 1},null);
+        new Transition(State.q0, State.q0, InputSymbol.EPSILON, {id: 1},null);
     }).toThrowError();
 });
 
 test('Expect error when creating a Transition with null stackPush', () => {
     expect(() => {
-        new Transition(State.q0, State.q0, PDASymbol.EPSILON,PDASymbol.EPSILON,null);
+        new Transition(State.q0, State.q0, InputSymbol.EPSILON, StackSymbol.EMPTY_STACK,null);
     }).toThrowError();
 });
 
 test('Expect error when creating a Transition with non Symbol stackPush', () => {
     expect(() => {
-        new Transition(State.q0, State.q0, PDASymbol.EPSILON, PDASymbol.EPSILON, {id: 1});
+        new Transition(State.q0, State.q0, InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, {id: 1});
     }).toThrowError();
 });

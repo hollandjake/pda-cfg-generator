@@ -1,6 +1,12 @@
-import Symbol from "../Symbol.js";
+import StackSymbol from "./StackSymbol.js";
+import InputSymbol from "./InputSymbol.js";
 
-export const PDASymbol = {
-    EPSILON: Symbol.of('ε'),
-    EMPTY_STACK: Symbol.of('$')
+export default class PDASymbol {
+    static of(id) {
+        if (id.toString().toUpperCase() === id) {
+            return new StackSymbol(id.toString());
+        } else {
+            return new InputSymbol(id.toString());
+        }
+    }
 }

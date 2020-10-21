@@ -1,12 +1,13 @@
 import Rule from "../../../src/internal/cfg/Rule.js";
 import CFG from "../../../src/internal/cfg/CFG.js";
 import CFGSymbol from "../../../src/internal/cfg/CFGSymbol.js";
+import Variable from "../../../src/internal/cfg/Variable.js";
 
 test('Creates a CFG', () => {
-    let startVariable = CFGSymbol.S;
-    let variables = [CFGSymbol.S];
+    let startVariable = Variable.S;
+    let variables = [Variable.S];
     let terminals = [CFGSymbol.of('a')];
-    let rules = [new Rule(CFGSymbol.S, [CFGSymbol.of('a')])];
+    let rules = [new Rule(Variable.S, [CFGSymbol.of('a')])];
     let cfg = new CFG(variables, terminals, rules, startVariable);
     expect(cfg.startVariable).toEqual(startVariable);
     expect(cfg.variables).toEqual(variables);
@@ -27,11 +28,11 @@ test('Throws Error When Constructing CFG with non Variable startVariable', () =>
 });
 
 test('Creates a CFG from rules', () => {
-    let startVariable = CFGSymbol.S;
-    let variables = [CFGSymbol.S];
+    let startVariable = Variable.S;
+    let variables = [Variable.S];
     let terminals = [CFGSymbol.of('a')];
     let rules = [
-        new Rule(CFGSymbol.S, [CFGSymbol.S, CFGSymbol.of('a')])
+        new Rule(Variable.S, [Variable.S, CFGSymbol.of('a')])
     ];
     let target = new CFG(variables, terminals, rules, startVariable);
 
@@ -41,6 +42,6 @@ test('Creates a CFG from rules', () => {
 
 test('Throws Error When Creating a CFG from rules and startVariable isnt in rules', () => {
     expect(()=> {
-        CFG.fromRules([], CFGSymbol.S)
+        CFG.fromRules([], Variable.S)
     }).toThrowError();
 })
