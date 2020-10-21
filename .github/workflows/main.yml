@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   jest-tests:
@@ -14,10 +16,20 @@ jobs:
       - name: Install modules
         run: yarn
       - name: Run tests
-        run: yarn jest --json --outputFile="jest.results.json"
-      - uses: mattallty/jest-github-action@v1.0.3
-        if: github.event_name == 'pull_request'
+        run: yarn jest --json --outputFile=jest.results.json
+
+      - if: ${{ github.event_name == 'pull_request'}}
+        name: Add code comment PULL_REQUEST
+        uses: mattallty/jest-github-action@v1.0.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          changes-only: true
+          test-command: "yarn jest"
+
+      - if: ${{ github.event_name == 'push' }}
+        name: Add code comment PUSH
+        uses: mattallty/jest-github-action@v1.0.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          test-command: "yarn jest"
