@@ -48,11 +48,12 @@ test('Throws Error When Constructing PDA with non State acceptState', () => {
 
 test('Creates a PDA from transitions', () => {
     let acceptingState = State.q(1, true);
-    let states = [State.q0, acceptingState];
+    let states = [State.q0, acceptingState, State.q(2)];
     let inputAlphabet = [InputSymbol.EPSILON];
     let stackAlphabet = [StackSymbol.EMPTY_STACK];
     let transitions = [
-        new Transition(State.q0, acceptingState, InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK)
+        new Transition(State.q0, acceptingState, InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK),
+        new Transition(State.q0, State.q(2), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK)
     ];
     let startState = State.q0;
     let acceptStates = [acceptingState];
@@ -64,6 +65,6 @@ test('Creates a PDA from transitions', () => {
 
 test('Throws Error When Creating a PDA from transitions and startState isn\'t in transitions', () => {
     expect(() => {
-        PDA.fromTransitions([], State.q0)
+        PDA.fromTransitions([])
     }).toThrowError();
 })
