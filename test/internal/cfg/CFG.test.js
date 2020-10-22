@@ -2,6 +2,7 @@ import Rule from "../../../src/internal/cfg/Rule.js";
 import CFG from "../../../src/internal/cfg/CFG.js";
 import CFGSymbol from "../../../src/internal/cfg/CFGSymbol.js";
 import Variable from "../../../src/internal/cfg/Variable.js";
+import Symbol from "../../../src/internal/Symbol.js";
 
 test('Creates a CFG', () => {
     let startVariable = Variable.S;
@@ -46,6 +47,15 @@ test('Throws Error When Creating a CFG from rules and startVariable isnt in rule
     }).toThrowError();
 })
 
+
+test('Throws Error When Creating a CFG from rules and outputList contains a non Terminal or Variable', () => {
+    expect(() => {
+        CFG.fromRules([
+            new Rule(Variable.S,[Symbol.of("a")])
+        ])
+    }).toThrowError();
+})
+
 test('Can parse string input', () => {
     let cfg = CFG.fromString("A->aA,B->bB");
     let target = CFG.fromRules([
@@ -55,8 +65,12 @@ test('Can parse string input', () => {
     expect(cfg).toEqual(target);
 })
 
-test('Returns null when no rules given to string parser', () => {
+test('Returns null when empty input given to string parser', () => {
     expect(CFG.fromString("")).toBe(null);
+})
+
+test('Returns null when no rules given to string parser', () => {
+    expect(CFG.fromString(",")).toBe(null);
 })
 
 test('Returns null when null given to string parser', () => {
