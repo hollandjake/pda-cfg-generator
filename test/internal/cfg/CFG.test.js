@@ -16,14 +16,14 @@ test('Creates a CFG', () => {
 })
 
 test('Throws Error When Constructing CFG with NULL startVariable', () => {
-   expect(() => {
-       new CFG([], [], [], null);
-   }).toThrowError();
+    expect(() => {
+        new CFG([], [], [], null);
+    }).toThrowError();
 });
 
 test('Throws Error When Constructing CFG with non Variable startVariable', () => {
     expect(() => {
-        new CFG([], [], [], {id:1});
+        new CFG([], [], [], {id: 1});
     }).toThrowError();
 });
 
@@ -41,7 +41,7 @@ test('Creates a CFG from rules', () => {
 })
 
 test('Throws Error When Creating a CFG from rules and startVariable isnt in rules', () => {
-    expect(()=> {
+    expect(() => {
         CFG.fromRules([], Variable.S)
     }).toThrowError();
 })
