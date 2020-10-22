@@ -17,24 +17,7 @@ jobs:
         run: yarn
       - name: Run tests
         run: yarn jest --json --outputFile=jest.results.json
-
-      - if: ${{ github.event_name == 'pull_request'}}
-        name: Add code comment PULL_REQUEST
-        uses: mattallty/jest-github-action@v1.0.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          test-command: "yarn jest"
-
-      - if: ${{ github.event_name == 'push' }}
-        name: Add code comment PUSH
-        uses: mattallty/jest-github-action@v1.0.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          test-command: "yarn jest"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: jest.results.json
