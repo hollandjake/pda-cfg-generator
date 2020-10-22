@@ -1,7 +1,6 @@
 import Rule from "../../../src/internal/cfg/Rule.js";
 import Variable from "../../../src/internal/cfg/Variable.js";
 import CFGSymbol from "../../../src/internal/cfg/CFGSymbol.js";
-import CFG from "../../../src/internal/cfg/CFG.js";
 
 test('Construct new Rule', () => {
     let S = CFGSymbol.of("S");
@@ -19,7 +18,7 @@ test('Expect error when creating a Rule with null inputVariable', () => {
 
 test('Expect error when creating a Rule with non Variable inputVariable', () => {
     expect(() => {
-        new Rule({id:1}, []);
+        new Rule({id: 1}, []);
     }).toThrowError();
 });
 
@@ -44,7 +43,7 @@ test('Expect error when creating a Rule with empty outputList', () => {
 test('Can parse string input', () => {
     let rule = Rule.fromString("A->aA");
     expect(rule.inputVariable).toEqual(CFGSymbol.of("A"));
-    expect(rule.outputList).toEqual([CFGSymbol.of("a"),CFGSymbol.of("A")]);
+    expect(rule.outputList).toEqual([CFGSymbol.of("a"), CFGSymbol.of("A")]);
 })
 
 test('Returns null when empty string given to string parser', () => {
