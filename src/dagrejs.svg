@@ -1,0 +1,185 @@
+<svg id="dagre" style="display: flex; height: 100vh;" width="100%" height="317.453125">
+    <g transform="translate(0,-88) scale(1)">
+        <g class="output">
+            <g class="clusters"></g>
+            <g class="edgePaths">
+                <g class="edgePath" style="opacity: 1;">
+                    <path class="path" d="M58,63L111.3359375,63L174.0078125,63"
+                          marker-end="url(http://pda-cfg-generator.local/#arrowhead27)" style="fill: none;"></path>
+                    <defs>
+                        <marker id="arrowhead27" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth"
+                                markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath" style="opacity: 1;">
+                    <path class="path"
+                          d="M186.45007484511834,80.83244450011684L174.0078125,114.66666666666666L174.0078125,122.83333333333334L193.0078125,131L212.0078125,122.83333333333334L212.0078125,114.66666666666666L199.56555015488166,80.83244450011684"
+                          marker-end="url(http://pda-cfg-generator.local/#arrowhead28)" style="fill: none;"></path>
+                    <defs>
+                        <marker id="arrowhead28" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth"
+                                markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath" style="opacity: 1;">
+                    <path class="path"
+                          d="M209.4995157721302,53.56476162548023L276.90625,15L343.41357252886394,33.82525521133973"
+                          marker-end="url(http://pda-cfg-generator.local/#arrowhead29)" style="fill: none;"></path>
+                    <defs>
+                        <marker id="arrowhead29" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth"
+                                markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath" style="opacity: 1;">
+                    <path class="path" d="M343.41357252886394,44.17474478866027L276.90625,63L212.0078125,63"
+                          marker-end="url(http://pda-cfg-generator.local/#arrowhead30)" style="fill: none;"></path>
+                    <defs>
+                        <marker id="arrowhead30" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth"
+                                markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath" style="opacity: 1;">
+                    <path class="path" d="M207.76838857629764,74.96350257641257L276.90625,131L342.6953125,131"
+                          marker-end="url(http://pda-cfg-generator.local/#arrowhead31)" style="fill: none;"></path>
+                    <defs>
+                        <marker id="arrowhead31" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth"
+                                markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath" style="opacity: 1;">
+                    <path class="path"
+                          d="M355.1375748451183,148.83244450011682L342.6953125,182.66666666666666L342.6953125,190.83333333333334L361.6953125,199L380.6953125,190.83333333333334L380.6953125,182.66666666666666L368.2530501548817,148.83244450011682"
+                          marker-end="url(http://pda-cfg-generator.local/#arrowhead32)" style="fill: none;"></path>
+                    <defs>
+                        <marker id="arrowhead32" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth"
+                                markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath" style="opacity: 1;">
+                    <path class="path" d="M380.6953125,131L443.3671875,131L495.8125,131"
+                          marker-end="url(http://pda-cfg-generator.local/#arrowhead33)" style="fill: none;"></path>
+                    <defs>
+                        <marker id="arrowhead33" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth"
+                                markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+            </g>
+            <g class="edgeLabels">
+                <g class="edgeLabel" transform="translate(111.3359375,82)" style="opacity: 1;">
+                    <g transform="translate(-28.3359375,-9)" class="label">
+                        <text>
+                            <tspan xml:space="preserve" dy="1em" x="1">a, ε → B</tspan>
+                        </text>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(193.0078125,164.3359375)" style="opacity: 1;">
+                    <g transform="translate(-28.3359375,-9)" class="label">
+                        <text>
+                            <tspan xml:space="preserve" dy="1em" x="1">a, ε → B</tspan>
+                        </text>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(276.90625,34)" style="opacity: 1;">
+                    <g transform="translate(-28.3359375,-9)" class="label">
+                        <text>
+                            <tspan xml:space="preserve" dy="1em" x="1">ε, B → ε</tspan>
+                        </text>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(276.90625,82)" style="opacity: 1;">
+                    <g transform="translate(-30.5625,-9)" class="label">
+                        <text>
+                            <tspan xml:space="preserve" dy="1em" x="1">ε, B → A</tspan>
+                        </text>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(276.90625,150)" style="opacity: 1;">
+                    <g transform="translate(-29.2265625,-9)" class="label">
+                        <text>
+                            <tspan xml:space="preserve" dy="1em" x="1">b, A → ε</tspan>
+                        </text>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(361.6953125,233.2265625)" style="opacity: 1;">
+                    <g transform="translate(-29.2265625,-9)" class="label">
+                        <text>
+                            <tspan xml:space="preserve" dy="1em" x="1">b, A → ε</tspan>
+                        </text>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(443.3671875,150)" style="opacity: 1;">
+                    <g transform="translate(-27.4453125,-9)" class="label">
+                        <text>
+                            <tspan xml:space="preserve" dy="1em" x="1">ε, $ → $</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+            <g class="nodes">
+                <g class="node" transform="translate(39,63)" style="opacity: 1;">
+                    <circle x="-18" y="-19" r="19" class="label-container"></circle>
+                    <g class="label" transform="translate(0,0)">
+                        <g transform="translate(-8,-9)">
+                            <text>
+                                <tspan xml:space="preserve" dy="1em" x="1">q0</tspan>
+                            </text>
+                        </g>
+                    </g>
+                </g>
+                <g class="node" transform="translate(514.8125,131)" style="opacity: 1;">
+                    <circle x="-18" y="-19" r="19" class="label-container"></circle>
+                    <g class="label" transform="translate(0,0)">
+                        <g transform="translate(-8,-9)">
+                            <text>
+                                <tspan xml:space="preserve" dy="1em" x="1">q4</tspan>
+                            </text>
+                        </g>
+                    </g>
+                </g>
+                <g class="node" transform="translate(193.0078125,63)" style="opacity: 1;">
+                    <circle x="-18" y="-19" r="19" class="label-container"></circle>
+                    <g class="label" transform="translate(0,0)">
+                        <g transform="translate(-8,-9)">
+                            <text>
+                                <tspan xml:space="preserve" dy="1em" x="1">q1</tspan>
+                            </text>
+                        </g>
+                    </g>
+                </g>
+                <g class="node" transform="translate(361.6953125,39)" style="opacity: 1;">
+                    <circle x="-18" y="-19" r="19" class="label-container"></circle>
+                    <g class="label" transform="translate(0,0)">
+                        <g transform="translate(-8,-9)">
+                            <text>
+                                <tspan xml:space="preserve" dy="1em" x="1">q2</tspan>
+                            </text>
+                        </g>
+                    </g>
+                </g>
+                <g class="node" transform="translate(361.6953125,131)" style="opacity: 1;">
+                    <circle x="-18" y="-19" r="19" class="label-container"></circle>
+                    <g class="label" transform="translate(0,0)">
+                        <g transform="translate(-8,-9)">
+                            <text>
+                                <tspan xml:space="preserve" dy="1em" x="1">q3</tspan>
+                            </text>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

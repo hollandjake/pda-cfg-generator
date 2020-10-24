@@ -10,5 +10,11 @@
   },
   "jest": {
     "collectCoverage": true
+  },
+  "dependencies": {
+    "cytoscape-dagre": "^2.3.0",
+    "dagre": "^0.8.5",
+    "dagre-d3": "^0.6.4",
+    "viz.js": "^2.1.2"
   }
 }

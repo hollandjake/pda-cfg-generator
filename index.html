@@ -5,6 +5,51 @@
     <title>PDA to CFG Question Generator</title>
 </head>
 <body>
+<div id="vis.js" style="display: flex; height: 100vh"></div>
+<div id="viz.js" style="display: flex; height: 100vh"></div>
+<svg id="dagre" style="display: flex; height: 100vh;" width="100%"><g/></svg>
+
+<style>
+
+    svg#dagre {
+        border: 1px solid #999;
+        overflow: hidden;
+    }
+
+    #dagre .node {
+        white-space: nowrap;
+    }
+
+    #dagre .node rect,
+    #dagre .node circle,
+    #dagre .node ellipse {
+        stroke: #333;
+        fill: #fff;
+        stroke-width: 1.5px;
+    }
+
+    #dagre .cluster rect {
+        stroke: #333;
+        fill: #000;
+        fill-opacity: 0.1;
+        stroke-width: 1.5px;
+    }
+
+    #dagre .edgePath path.path {
+        stroke: #333;
+        stroke-width: 1.5px;
+        fill: none;
+    }
+
+</style>
+
+<script src="src/external/vis-network.js"></script>
+
+<script src="src/external/viz.js"></script>
+
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://dagrejs.github.io/project/graphlib-dot/v0.6.3/graphlib-dot.js"></script>
+<script src="src/external/dagre-d3.js"></script>
 <script type="module" src="index.js"></script>
 </body>
 </html>
