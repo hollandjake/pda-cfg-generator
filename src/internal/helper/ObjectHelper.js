@@ -1,7 +1,7 @@
 // noinspection EqualityComparisonWithCoercionJS,JSUnfilteredForInLoop
 export default class ObjectHelper {
     static equals(item1, item2) {
-        if (item1 !== Object(item1) && item2 !== Object(item2)) {
+        if (item1 !== Object(item1) || item2 !== Object(item2)) {
             return item1 == item2;
         }
 
