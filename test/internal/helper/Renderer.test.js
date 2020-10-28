@@ -7,20 +7,20 @@ import PDA from "../../../src/internal/pda/PDA.js";
 
 test('Can convert to DOT notation', () => {
     let testPDA = PDA.fromTransitions([
-        new Transition(State.q0, State.q(1, true), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK),
-        new Transition(State.q0, State.q(2), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK)
-    ], State.q0);
-    expect(Renderer.convertToDotNotation(testPDA)).toBe("digraph {" +
+        new Transition(State.p0, State.p(1, true), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK),
+        new Transition(State.p0, State.p(2), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK)
+    ], State.p0);
+    expect(Renderer.convertToDotNotation(testPDA)).toEqual("digraph {" +
         "rankdir=LR;" +
-        "node [shape = circle, color=green]; q0;" +
-        "node [shape = doublecircle, color=black]; q1;" +
+        "node [shape = circle, color=green]; p₀;" +
+        "node [shape = doublecircle, color=black]; p₁;" +
         "node [shape = circle];" +
-        "q0 -> q1 [label = \"ε, $ → $\", color = black ]; " +
-        "q0 -> q2 [label = \"ε, $ → $\", color = black ];}");
+        "p₀ -> p₁ [label = \"ε, $ → $\", color = black ]; " +
+        "p₀ -> p₂ [label = \"ε, $ → $\", color = black ];}");
 });
 
 test('Can create Renderer instance', () => {
     let DOMNode = HTMLElement.DOCUMENT_NODE;
     let renderer = new Renderer(DOMNode);
-    expect(renderer.graphElement).toBe(DOMNode);
+    expect(renderer.graphElement).toEqual(DOMNode);
 })

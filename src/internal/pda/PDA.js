@@ -4,6 +4,9 @@ import Symbol from "../Symbol.js";
 import InputSymbol from "./InputSymbol.js";
 import StackSymbol from "./StackSymbol.js";
 import Transition from "./Transition.js";
+import PDASimplify from "./PDASimplify.js";
+import ObjectHelper from "../helper/ObjectHelper.js";
+import PDAConvert from "./PDAConvert.js";
 
 export default class PDA {
     /**
@@ -11,7 +14,7 @@ export default class PDA {
      * @param {InputSymbol[]} inputAlphabet (Σ)
      * @param {StackSymbol[]} stackAlphabet (Γ)
      * @param {Transition[]} transitions (δ)
-     * @param {State} startState (q0)
+     * @param {State} startState (p0)
      * @param {State[]} acceptStates (F)
      */
     constructor(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates) {
@@ -29,40 +32,60 @@ export default class PDA {
         this._transitions = ArrayHelper.distinct(transitions);
         this._startState = startState;
         this._acceptStates = Symbol.sort(ArrayHelper.distinct(acceptStates));
+        this._ghost_states = [];
+        this._ghost_stackAlphabet = [];
     }
 
+    /**
+     * @returns {State[]}
+     */
     get states() {
         return this._states;
     }
 
+    /**
+     * @returns {InputSymbol[]}
+     */
     get inputAlphabet() {
         return this._inputAlphabet;
     }
 
+    /**
+     * @returns {StackSymbol[]}
+     */
     get stackAlphabet() {
         return this._stackAlphabet;
     }
 
+    /**
+     * @returns {Transition[]}
+     */
     get transitions() {
         return this._transitions;
     }
 
+    /**
+     * @returns {State}
+     */
     get startState() {
         return this._startState;
     }
 
+    /**
+     * @returns {State[]}
+     */
     get acceptStates() {
         return this._acceptStates;
     }
 
     /**
      * @param {Transition[]} transitions
-     * @param {State} startState Defaults to {State.q0}
+     * @param {State} startState Defaults to {State.p0}
      */
-    static fromTransitions(transitions, startState = State.q0) {
+    static fromTransitions(transitions, startState = State.p0) {
         let states = [];
         let inputAlphabet = [];
-        let stackAlphabet = [StackSymbol.EMPTY_STACK];
+        let stackAlphabet = [];
         let acceptStates = [];
 
         ArrayHelper.distinct(transitions).forEach(transition => {
@@ -84,8 +107,45 @@ export default class PDA {
         return new PDA(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates);
     }
 
+    toCFG() {
+        let pda = this.simplify();
+        return PDAConvert.toCFG(pda);
+    }
+
+    /**
+     * @returns {PDA} expanded PDA
+     */
+    simplify() {
+        return PDASimplify.simplify(this);
+    }
+
     /* istanbul ignore next */
     toString() {
         return `PDA (Q = {${this.states.map(s => s.toString())}}, Σ = {${this.inputAlphabet.map(i => i.toString())}}, Γ = {${this.stackAlphabet.map(s => s.toString())}}, δ, '${this.startState.toString()}' ,F = {${this.acceptStates.map(s => s.toString())}}) δ: [\n\t${this.transitions.map(t => t.toString()).join(',\n\t')}\n]`;
+    }
+
+    nextState() {
+        let usedStates = Symbol.sort(this.states.concat(this._ghost_states)).reverse();
+        if (usedStates.length === 0) {
+            usedStates = [State.p(-1)];
+        }
+        let lastNum = usedStates[0].num;
+        let nextState = new State(lastNum+1, false);
+        this._ghost_states.push(nextState);
+        return nextState;
+    }
+
+    /**
+     * @returns {StackSymbol}
+     */
+    nextStackSymbol() {
+        let usedSymbols = Symbol.sort(this.stackAlphabet.concat(this._ghost_stackAlphabet)).reverse().filter(s => !ObjectHelper.equals(s,StackSymbol.EPSILON) && !ObjectHelper.equals(s, StackSymbol.EMPTY_STACK));
+        if (usedSymbols.length === 0) {
+            usedSymbols = [new StackSymbol('A')];
+        }
+        let lastSymbol = usedSymbols[0].id;
+        let nextSymbol = new StackSymbol(String.fromCharCode(lastSymbol.charCodeAt(0)+1));
+        this._ghost_stackAlphabet.push(nextSymbol);
+        return nextSymbol;
     }
 }

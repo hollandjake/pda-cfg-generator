@@ -3,6 +3,9 @@ import ArrayHelper from "../helper/ArrayHelper.js";
 import Variable from "./Variable.js";
 import Terminal from "./Terminal.js";
 import Rule from "./Rule.js";
+import CFGNormalise from "./CFGNormalise.js";
+import ObjectHelper from "../helper/ObjectHelper.js";
+import CFGSimplify from "./CFGSimplify.js";
 
 export default class CFG {
     /**
@@ -18,8 +21,17 @@ export default class CFG {
         this._variables = Symbol.sort(ArrayHelper.distinct(variables));
         this._terminals = Symbol.sort(ArrayHelper.distinct(terminals));
 
-        this._rules = ArrayHelper.distinct(rules);
+        this._rules = Rule.sort(ArrayHelper.distinct(rules));
         this._startVariable = startVariable;
+        this._ghost_variables = [];
+    }
+
+    normalise() {
+        return CFGNormalise.normalise(this);
+    }
+
+    simplify() {
+        return CFGSimplify.simplify(this);
     }
 
     get variables() {
@@ -38,9 +50,23 @@ export default class CFG {
         return this._startVariable;
     }
 
+    nextVariable() {
+        let usedVariables = Symbol.sort(this.variables.concat(this._ghost_variables)).reverse().filter(s => !ObjectHelper.equals(s,Variable.S) && !ObjectHelper.equals(s, Variable.S0));
+        if (usedVariables.length === 0) {
+            usedVariables = [new Variable(String.fromCharCode(64))];
+        }
+        let lastVariable = usedVariables[0].id;
+        let nextCharCode = lastVariable.charCodeAt(0)+1;
+        if (nextCharCode === 83) {nextCharCode=84}
+        let nextVariable = new Variable(String.fromCharCode(nextCharCode));
+        this._ghost_variables.push(nextVariable);
+        return nextVariable;
+    }
+
     /**
      * @param {Rule[]} rules
      * @param {Variable} startVariable
+     * @param {boolean} simplify
      * @return CFG
      */
     static fromRules(rules, startVariable = Variable.S) {
