@@ -9,13 +9,13 @@ export default class Renderer {
      *
      * @param {PDA} pda
      */
-    convertToDotNotation(pda) {
+    static convertToDotNotation(pda) {
         return 'digraph {' +
             'rankdir=LR;' +
             `node [shape = circle, color=green]; ${pda.startState.id};` +
             `node [shape = doublecircle, color=black]; ${pda.acceptStates.map(acceptState => acceptState.id).join(" ")};` +
             'node [shape = circle];' +
-            `${pda.transitions.map(transition => Renderer.convertTransitionToDotNotation(transition)).join("\n")}` +
+            `${pda.transitions.map(transition => Renderer.convertTransitionToDotNotation(transition)).join(" ")}` +
             '}'
     }
 
@@ -31,13 +31,17 @@ export default class Renderer {
     /**
      * @param {PDA} pda
      */
+    /* istanbul ignore next */
     render(pda) {
-        let dotNotation = this.convertToDotNotation(pda);
+        let dotNotation = Renderer.convertToDotNotation(pda);
         try {
-            let result = Viz(dotNotation, 'svg', 'dot');
-            this._graphElement.innerHTML = result;
+            this._graphElement.innerHTML = Viz(dotNotation, 'svg', 'dot');
         } catch (e) {
             this._graphElement.innerHTML = e;
         }
+    }
+
+    get graphElement() {
+        return this._graphElement;
     }
 }
