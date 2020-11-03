@@ -3,6 +3,7 @@ import State from "./State.js";
 import Symbol from "../Symbol.js";
 import InputSymbol from "./InputSymbol.js";
 import StackSymbol from "./StackSymbol.js";
+import Transition from "./Transition.js";
 
 export default class PDA {
     /**
@@ -65,6 +66,9 @@ export default class PDA {
         let acceptStates = [];
 
         ArrayHelper.distinct(transitions).forEach(transition => {
+            if (!(transition instanceof Transition)) {
+                throw new Error("transition is not of type 'Transition'");
+            }
             states.push(transition.fromState, transition.toState);
             inputAlphabet.push(transition.input);
             stackAlphabet.push(transition.stackHead, transition.stackPush);

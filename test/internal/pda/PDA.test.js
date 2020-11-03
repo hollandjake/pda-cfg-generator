@@ -68,3 +68,9 @@ test('Throws Error When Creating a PDA from transitions and startState isn\'t in
         PDA.fromTransitions([])
     }).toThrowError();
 })
+
+test('Throws Error When Creating a PDA from non Transition transition', () => {
+    expect(() => {
+        PDA.fromTransitions([null])
+    }).toThrowError();
+})
