@@ -6,6 +6,7 @@ import Rule from "./Rule.js";
 import CFGNormalise from "./CFGNormalise.js";
 import ObjectHelper from "../helper/ObjectHelper.js";
 import CFGSimplify from "./CFGSimplify.js";
+import CFGRemapper from "./CFGRemapper.js";
 
 export default class CFG {
     /**
@@ -32,6 +33,10 @@ export default class CFG {
 
     simplify() {
         return CFGSimplify.simplify(this);
+    }
+
+    remap() {
+        return CFGRemapper.remap(this);
     }
 
     get variables() {
@@ -120,6 +125,6 @@ export default class CFG {
 
     /* istanbul ignore next */
     toString() {
-        return `CFG (V = {${this.variables.map(v => v.toString())}}, Σ = {${this.terminals.map(t => t.toString())}}, R, S = ${this.startVariable}) R: [\n\t${this.rules.map(r => r.toString()).join(',\n\t')}\n]`;
+        return `CFG (V = {${this.variables.map(v => v.toString())}}, Σ = {${this.terminals.map(t => t.toString())}}, R, S = ${this.startVariable}) R: [\n\t${this.rules.filter(r=>ObjectHelper.equals(r.inputVariable, this.startVariable)).map(r => r.toString()).join(',\n\t')},\n\t${this.rules.filter(r=>!ObjectHelper.equals(r.inputVariable, this.startVariable)).map(r => r.toString()).join(',\n\t')}\n]`;
     }
 }

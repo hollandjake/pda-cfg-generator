@@ -64,10 +64,10 @@ let pda = PDA.fromTransitions([
         StackSymbol.EMPTY_STACK,
         StackSymbol.EMPTY_STACK
     )
-]);
+], State.start);
 console.log(pda.toString());
 
 let renderer = new Renderer(document.getElementById("pda"));
 renderer.render(pda);
 
-console.log(pda.toCFG().simplify().toString());
+console.log(pda.toCFG().remap().toString());

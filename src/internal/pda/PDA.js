@@ -108,8 +108,7 @@ export default class PDA {
     }
 
     toCFG() {
-        let pda = this.simplify();
-        return PDAConvert.toCFG(pda);
+        return PDAConvert.toCFG(this.simplify());
     }
 
     /**

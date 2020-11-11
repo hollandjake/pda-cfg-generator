@@ -13,8 +13,8 @@ export default class Renderer {
         return 'digraph {' +
             'rankdir=LR;' +
             `node [shape = circle, color=green]; ${pda.startState.id};` +
-            `node [shape = doublecircle, color=black]; ${pda.acceptStates.map(acceptState => acceptState.id).join(" ")};` +
-            'node [shape = circle];' +
+            (pda.acceptStates.length > 0 ? `node [shape = doublecircle, color=black]; ${pda.acceptStates.map(acceptState => acceptState.id).join(" ")};` : '') +
+            'node [shape = circle, color=black];' +
             `${pda.transitions.map(transition => Renderer.convertTransitionToDotNotation(transition)).join(" ")}` +
             '}'
     }

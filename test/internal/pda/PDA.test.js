@@ -78,6 +78,7 @@ test('Throws Error When Creating a PDA from non Transition transition', () => {
 
 test('CFG conversion', () => {
     let pda = PDA.fromTransitions([
+        new Transition(State.start, State.p0, InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.EMPTY_STACK),
         new Transition(State.p0, State.p(1), InputSymbol.of('a'), StackSymbol.EPSILON, StackSymbol.of('b')),
         new Transition(State.p(1), State.p(1), InputSymbol.of('a'), StackSymbol.EPSILON, StackSymbol.of('b')),
         new Transition(State.p(1), State.p(2), InputSymbol.EPSILON, StackSymbol.of('b'), StackSymbol.EPSILON),
