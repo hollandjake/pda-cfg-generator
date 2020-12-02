@@ -67,7 +67,16 @@ let pda = PDA.fromTransitions([
 ], State.start);
 console.log(pda.toString());
 
+pda = PDA.fromTransitions([
+    new Transition(State.p0, State.p(1), InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.EMPTY_STACK),
+    new Transition(State.p(1), State.p(1), InputSymbol.of('0'), StackSymbol.EPSILON, StackSymbol.of('0')),
+    new Transition(State.p(1), State.p(2), InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.EPSILON),
+    new Transition(State.p(2), State.p(2), InputSymbol.of('1'), StackSymbol.of('0'), StackSymbol.EPSILON),
+    new Transition(State.p(2), State.p(3,true), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK),
+], State.p0)
+
+
 let renderer = new Renderer(document.getElementById("pda"));
-renderer.render(pda);
+renderer.render(pda, true);
 
 console.log(pda.toCFG().remap().toString());

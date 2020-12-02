@@ -1,4 +1,7 @@
 import PDA from "../pda/PDA.js";
+import State from "../pda/State.js";
+import Terminal from "../cfg/Terminal.js";
+import Subscript from "./Subscript.js";
 
 export default class Renderer {
     constructor(graphElement) {
@@ -32,13 +35,34 @@ export default class Renderer {
      * @param {PDA} pda
      */
     /* istanbul ignore next */
-    render(pda) {
+    render(pda, forLatex) {
         let dotNotation = Renderer.convertToDotNotation(pda);
+
         try {
-            this._graphElement.innerHTML = Viz(dotNotation, 'svg', 'dot');
+            let innerHTML = Viz(dotNotation, 'svg', 'dot');
+            if (forLatex) {
+                innerHTML = this.mapToLatex(innerHTML);
+            }
+            this._graphElement.innerHTML = innerHTML;
         } catch (e) {
-            this._graphElement.innerHTML = e;
+            console.error(e);
+            this._graphElement.innerHTML = "";
         }
+    }
+
+    mapToLatex(html) {
+
+        html = html.replaceAll(/ε/g,'\\varepsilon ');
+        html = html.replaceAll(/→/g,'\\rightarrow ');
+        html = html.replaceAll(/\$/g,'\\$ ');
+        html = html.replaceAll(/<text (.+)>(.+)<\/text>/g,'<text $1>&#36;$2&#36;<\/text>');
+        html = html.replaceAll(/<title>(.+)<\/title>/g,'<title>&#36;$1&#36;<\/title>');
+
+        Object.entries(Subscript.SUBSCRIPTS).forEach(([key,value]) => {
+            html = html.replaceAll(value, `_{${key}}`);
+        })
+
+        return html;
     }
 
     get graphElement() {
