@@ -35,7 +35,7 @@ export default class Renderer {
      * @param {PDA} pda
      */
     /* istanbul ignore next */
-    render(pda, forLatex) {
+    render(pda, forLatex = false) {
         let dotNotation = Renderer.convertToDotNotation(pda);
 
         try {
