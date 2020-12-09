@@ -1,68 +1,67 @@
-import Renderer from "./src/internal/helper/Renderer.js";
 import CFG from "./src/internal/cfg/CFG.js";
 
 import Rule from "./src/internal/cfg/Rule.js";
-import PDA from "./src/internal/pda/PDA.js";
-import State from "./src/internal/pda/State.js";
-import Transition from "./src/internal/pda/Transition.js";
-import CFGSymbol from "./src/internal/cfg/CFGSymbol.js";
-import StackSymbol from "./src/internal/pda/StackSymbol.js";
-import PDASymbol from "./src/internal/pda/PDASymbol.js";
+import CFGString from "./src/internal/cfg/CFGString.js";
 import Variable from "./src/internal/cfg/Variable.js";
+import Renderer from "./src/internal/helper/Renderer.js";
+import Transition from "./src/internal/pda/Transition.js";
+import PDA from "./src/internal/pda/PDA.js";
+import StackSymbol from "./src/internal/pda/StackSymbol.js";
 import InputSymbol from "./src/internal/pda/InputSymbol.js";
+import State from "./src/internal/pda/State.js";
 
 console.log(CFG.fromRules([
-        new Rule(Variable.S, [Variable.S, CFGSymbol.of("a")]),
-        new Rule(CFGSymbol.of("P"), [Variable.S, CFGSymbol.of("e"), CFGSymbol.of('P')]),
+        new Rule(Variable.S, [Variable.S, CFGString.of("a")]),
+        new Rule(CFGString.of("P"), [Variable.S, CFGString.of("e"), CFGString.of('P')]),
     ]
 ).toString());
 
 let pda = PDA.fromTransitions([
     new Transition(
-        State.q0,
-        State.q(1),
-        PDASymbol.of("a"),
+        State.p0,
+        State.p(1),
+        InputSymbol.of("a"),
         StackSymbol.EPSILON,
-        PDASymbol.of("B")
+        StackSymbol.of("B")
     ),
     new Transition(
-        State.q(1),
-        State.q(1),
-        PDASymbol.of("a"),
+        State.p(1),
+        State.p(1),
+        InputSymbol.of("a"),
         StackSymbol.EPSILON,
-        PDASymbol.of("B")
+        StackSymbol.of("B")
     ),
     new Transition(
-        State.q(1),
-        State.q(2),
+        State.p(1),
+        State.p(2),
         InputSymbol.EPSILON,
-        PDASymbol.of("B"),
+        StackSymbol.of("B"),
         StackSymbol.EPSILON
     ),
     new Transition(
-        State.q(2),
-        State.q(1),
+        State.p(2),
+        State.p(1),
         InputSymbol.EPSILON,
-        PDASymbol.of("B"),
-        PDASymbol.of("A")
+        StackSymbol.of("B"),
+        StackSymbol.of("A")
     ),
     new Transition(
-        State.q(1),
-        State.q(3),
-        PDASymbol.of("b"),
-        PDASymbol.of("A"),
+        State.p(1),
+        State.p(3),
+        InputSymbol.of("b"),
+        StackSymbol.of("A"),
         StackSymbol.EPSILON
     ),
     new Transition(
-        State.q(3),
-        State.q(3),
-        PDASymbol.of("b"),
-        PDASymbol.of("A"),
+        State.p(3),
+        State.p(3),
+        InputSymbol.of("b"),
+        StackSymbol.of("A"),
         StackSymbol.EPSILON
     ),
     new Transition(
-        State.q(3),
-        State.q(4, true),
+        State.p(3),
+        State.p(4, true),
         InputSymbol.EPSILON,
         StackSymbol.EMPTY_STACK,
         StackSymbol.EMPTY_STACK
@@ -70,7 +69,5 @@ let pda = PDA.fromTransitions([
 ]);
 console.log(pda.toString());
 
-console.log(CFG.fromString("A->aB,A->b\nB->b").toString());
-
 let renderer = new Renderer(document.getElementById("pda"));
-renderer.render(pda);
+renderer.render(pda, true);

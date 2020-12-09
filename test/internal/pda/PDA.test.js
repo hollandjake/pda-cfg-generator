@@ -5,12 +5,12 @@ import InputSymbol from "../../../src/internal/pda/InputSymbol.js";
 import StackSymbol from "../../../src/internal/pda/StackSymbol.js";
 
 test('Creates a PDA', () => {
-    let acceptingState = State.q(1, true);
-    let states = [State.q0, acceptingState];
+    let acceptingState = State.p(1, true);
+    let states = [State.p0, acceptingState];
     let inputAlphabet = [InputSymbol.EPSILON];
     let stackAlphabet = [StackSymbol.EMPTY_STACK];
-    let transitions = [new Transition(State.q0, acceptingState, InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK)];
-    let startState = State.q0;
+    let transitions = [new Transition(State.p0, acceptingState, InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK)];
+    let startState = State.p0;
     let acceptStates = [acceptingState];
     let pda = new PDA(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates);
     expect(pda.states).toEqual(states);
@@ -36,26 +36,26 @@ test('Throws Error When Constructing PDA with non State startState', () => {
 
 test('Throws Error When Constructing PDA with NULL acceptState', () => {
     expect(() => {
-        new PDA([], [], [], [], State.q0, [null]);
+        new PDA([], [], [], [], State.p0, [null]);
     }).toThrowError();
 });
 
 test('Throws Error When Constructing PDA with non State acceptState', () => {
     expect(() => {
-        new PDA([], [], [], [], State.q0, [{id: 1}]);
+        new PDA([], [], [], [], State.p0, [{id: 1}]);
     }).toThrowError();
 });
 
 test('Creates a PDA from transitions', () => {
-    let acceptingState = State.q(1, true);
-    let states = [State.q0, acceptingState, State.q(2)];
+    let acceptingState = State.p(1, true);
+    let states = [State.p0, acceptingState, State.p(2)];
     let inputAlphabet = [InputSymbol.EPSILON];
     let stackAlphabet = [StackSymbol.EMPTY_STACK];
     let transitions = [
-        new Transition(State.q0, acceptingState, InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK),
-        new Transition(State.q0, State.q(2), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK)
+        new Transition(State.p0, acceptingState, InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK),
+        new Transition(State.p0, State.p(2), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK)
     ];
-    let startState = State.q0;
+    let startState = State.p0;
     let acceptStates = [acceptingState];
     let target = new PDA(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates);
 

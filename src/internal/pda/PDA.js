@@ -1,8 +1,6 @@
 import ArrayHelper from "../helper/ArrayHelper.js";
 import State from "./State.js";
 import Symbol from "../Symbol.js";
-import InputSymbol from "./InputSymbol.js";
-import StackSymbol from "./StackSymbol.js";
 import Transition from "./Transition.js";
 
 export default class PDA {
@@ -11,7 +9,7 @@ export default class PDA {
      * @param {InputSymbol[]} inputAlphabet (Σ)
      * @param {StackSymbol[]} stackAlphabet (Γ)
      * @param {Transition[]} transitions (δ)
-     * @param {State} startState (q0)
+     * @param {State} startState (p0)
      * @param {State[]} acceptStates (F)
      */
     constructor(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates) {
@@ -31,38 +29,68 @@ export default class PDA {
         this._acceptStates = Symbol.sort(ArrayHelper.distinct(acceptStates));
     }
 
+    /**
+     * @returns {State[]}
+     */
+
+    /* istanbul ignore next */
     get states() {
         return this._states;
     }
 
+    /**
+     * @returns {InputSymbol[]}
+     */
+
+    /* istanbul ignore next */
     get inputAlphabet() {
         return this._inputAlphabet;
     }
 
+    /**
+     * @returns {StackSymbol[]}
+     */
+
+    /* istanbul ignore next */
     get stackAlphabet() {
         return this._stackAlphabet;
     }
 
+    /**
+     * @returns {Transition[]}
+     */
+
+    /* istanbul ignore next */
     get transitions() {
         return this._transitions;
     }
 
+    /**
+     * @returns {State}
+     */
+
+    /* istanbul ignore next */
     get startState() {
         return this._startState;
     }
 
+    /**
+     * @returns {State[]}
+     */
+
+    /* istanbul ignore next */
     get acceptStates() {
         return this._acceptStates;
     }
 
     /**
      * @param {Transition[]} transitions
-     * @param {State} startState Defaults to {State.q0}
+     * @param {State} startState Defaults to {State.p0}
      */
-    static fromTransitions(transitions, startState = State.q0) {
+    static fromTransitions(transitions, startState = State.p0) {
         let states = [];
         let inputAlphabet = [];
-        let stackAlphabet = [StackSymbol.EMPTY_STACK];
+        let stackAlphabet = [];
         let acceptStates = [];
 
         ArrayHelper.distinct(transitions).forEach(transition => {
