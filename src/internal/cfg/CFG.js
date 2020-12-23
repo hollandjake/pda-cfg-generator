@@ -80,7 +80,7 @@ export default class CFG {
      */
     static fromString(inputString) {
         if (inputString !== null && inputString.length > 0) {
-            let ruleStrings = inputString.split(/[,\n]/);
+            let ruleStrings = inputString.replace("e", Terminal.EPSILON.id).split(/[,\n]/);
 
             let rules = ruleStrings.map(rule => Rule.fromString(rule)).filter(rule => rule !== null);
 

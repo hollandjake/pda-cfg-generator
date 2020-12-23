@@ -21,12 +21,22 @@ export default class ArrayHelper {
      * @returns {boolean}
      */
     static contains(array, search) {
-        for (let item of array) {
-            if (ObjectHelper.equals(item, search)) {
-                return true;
+        return ArrayHelper.find(array, search) !== null
+    }
+
+    /**
+     * Find an element in an array
+     * @param array
+     * @param search
+     * @returns {null|number}
+     */
+    static find(array, search) {
+        for (let i = 0, len = array.length; i < len; i++) {
+            if (ObjectHelper.equals(array[i], search)) {
+                return i;
             }
         }
-        return false;
+        return null;
     }
 
     /**
