@@ -4,6 +4,8 @@ import Variable from "./Variable.js";
 import Rule from "./Rule.js";
 import ObjectHelper from "../helper/ObjectHelper.js";
 import Terminal from "./Terminal.js";
+import CFL from "../cfl/CFL.js";
+import CFGSimplify from "./CFGSimplify.js";
 
 export default class CFG {
     /**
@@ -37,6 +39,14 @@ export default class CFG {
 
     get startVariable() {
         return this._startVariable;
+    }
+
+    toCFL() {
+        return CFL.fromCFG(this);
+    }
+
+    simplify() {
+        return CFGSimplify.simplify(this);
     }
 
     /**

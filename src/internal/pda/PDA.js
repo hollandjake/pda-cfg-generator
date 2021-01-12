@@ -2,6 +2,9 @@ import ArrayHelper from "../helper/ArrayHelper.js";
 import State from "./State.js";
 import Symbol from "../Symbol.js";
 import Transition from "./Transition.js";
+import PDAConvert from "./PDAConvert.js";
+import StackSymbol from "./StackSymbol.js";
+import PDASimplify from "./PDASimplify.js";
 
 export default class PDA {
     /**
@@ -27,60 +30,60 @@ export default class PDA {
         this._transitions = ArrayHelper.distinct(transitions);
         this._startState = startState;
         this._acceptStates = Symbol.sort(ArrayHelper.distinct(acceptStates));
+        this._generatedStates = [];
+        this._generatedStackSymbols = [];
     }
 
+    /* istanbul ignore next */
     /**
      * @returns {State[]}
      */
-
-    /* istanbul ignore next */
     get states() {
         return this._states;
     }
 
+    /* istanbul ignore next */
     /**
      * @returns {InputSymbol[]}
      */
-
-    /* istanbul ignore next */
     get inputAlphabet() {
         return this._inputAlphabet;
     }
 
+    /* istanbul ignore next */
     /**
      * @returns {StackSymbol[]}
      */
-
-    /* istanbul ignore next */
     get stackAlphabet() {
         return this._stackAlphabet;
     }
 
+    /* istanbul ignore next */
     /**
      * @returns {Transition[]}
      */
-
-    /* istanbul ignore next */
     get transitions() {
         return this._transitions;
     }
 
+    /* istanbul ignore next */
     /**
      * @returns {State}
      */
-
-    /* istanbul ignore next */
     get startState() {
         return this._startState;
     }
 
+    /* istanbul ignore next */
     /**
      * @returns {State[]}
      */
-
-    /* istanbul ignore next */
     get acceptStates() {
         return this._acceptStates;
+    }
+
+    toCFG() {
+        return PDAConvert.toCFG(PDASimplify.simplify(this));
     }
 
     /**
@@ -110,6 +113,20 @@ export default class PDA {
         }
 
         return new PDA(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates);
+    }
+
+    generateNewState() {
+        let newState = State.p(-1 * (this._generatedStates.length + 1));
+        this._generatedStates.push(newState);
+
+        return newState;
+    }
+
+    generateNewStackSymbol() {
+        let newSymbol = StackSymbol.of(-1 * (this._generatedStackSymbols.length + 1));
+        this._generatedStackSymbols.push(newSymbol);
+
+        return newSymbol;
     }
 
     /* istanbul ignore next */

@@ -3,6 +3,7 @@ import Variable from "../cfg/Variable.js";
 import ArrayHelper from "../helper/ArrayHelper.js";
 import PathSegment from "./PathSegment.js";
 import Terminal from "../cfg/Terminal.js";
+import MagicMap from "../helper/MagicMap.js";
 
 export default class CFL {
     constructor(paths) {
@@ -13,68 +14,114 @@ export default class CFL {
         return this._paths;
     }
 
+    static fromPDA(pda) {
+        return pda.toCFG().simplify().toCFL();
+    }
+
     /**
      * @param {CFG} cfg
      */
     static fromCFG(cfg) {
+        let rules = cfg.rules;
 
-        let variableMap = {}
+        let baseVariableMap = new MagicMap();
 
-        //Map each variable into its set of rules which have been reduced
         cfg.variables.forEach(variable => {
-            variableMap[variable.id] = cfg.rules
-                // For each rule which has variable as input
-                .filter(r => ObjectHelper.equals(r.inputVariable, variable))
-                // reduce each rule
-                .map(r => {
-                    // If output contains the variable itself then we must perform the reduction
-                    if (ArrayHelper.contains(r.outputList, variable)) {
-                        let index = ArrayHelper.find(r.outputList, variable);
-                        let x1 = r.outputList.slice(0, index).filter(i => !ObjectHelper.equals(i, Terminal.EPSILON));
-                        let x2 = r.outputList.slice(index + 1, r.outputList.length).filter(i => !ObjectHelper.equals(i, Terminal.EPSILON));
+            baseVariableMap.set(variable, rules.filter(r => ObjectHelper.equals(r.inputVariable, variable)).map(r => r.outputList));
+        });
 
-                        return [
-                            PathSegment.from(x1), PathSegment.from(x2)
-                        ];
-                    }
-                    return r.outputList.filter(i => !ObjectHelper.equals(i, Terminal.EPSILON));
-                })
+        let paths = this.forVariable(cfg.startVariable, baseVariableMap, [], new MagicMap());
+
+        paths = ArrayHelper.distinct(paths);
+        return new CFL(paths);
+    }
+
+    /**
+     *
+     * @param {[[[Symbol]]]} m
+     * @returns {[[]]}
+     */
+    static expandMapping(m) {
+        let mapping = [...m].reverse();
+        //Initialise with the first element from the mapping
+        let outputs = mapping.pop();
+
+        mapping.reverse().forEach(element => {
+            let tempOutputs = [];
+            element.forEach(sequence => {
+                tempOutputs = tempOutputs.concat(outputs.map(output => {
+                    return output.concat(sequence);
+                }))
+            })
+            outputs = tempOutputs;
         })
 
-        let paths = variableMap[cfg.startVariable.id];
+        return outputs;
+    }
 
-        let finalPaths = paths.map(path => {
-            let outputs = [];
-            for (let i = path.length - 1; i >= 0; i--) {
-                let element = path[i];
+    /**
+     *
+     * @param activeVariable
+     * @param {MagicMap} baseMappings
+     * @param {Variable[]} exploreStack
+     * @param {MagicMap} finalMap
+     * @returns [ [Symbol] ]
+     */
+    static forVariable(activeVariable, baseMappings, exploreStack, finalMap) {
+        if (ArrayHelper.contains(exploreStack, activeVariable)) {
+            return [[activeVariable]];
+        }
 
+        if (finalMap.has(activeVariable)) {
+            return finalMap.get(activeVariable);
+        }
+
+        exploreStack.push(activeVariable);
+
+        /**
+         * @var {[[Symbol]]} variableMappings
+         */
+        let variableMappings = baseMappings.get(activeVariable);
+
+        //Shallow replace
+        variableMappings = variableMappings.map(mapping => {
+            let newMappings = mapping.map(element => {
                 if (element instanceof Variable) {
-                    let varData = variableMap[element.id];
-                    if (outputs.length === 0) {
-                        outputs = varData;
-                    } else {
-                        let newOutputs = []
-                        varData.forEach(varPath => {
-                            outputs.forEach(output => {
-                                newOutputs.push(varPath.concat(output));
-                            })
-                        })
-                        outputs = newOutputs;
-                    }
+                    return this.forVariable(element, baseMappings, [...exploreStack], finalMap);
                 } else {
-                    if (outputs.length === 0) {
-                        outputs = [[element]]
+                    if (ObjectHelper.equals(element, Terminal.EPSILON)) {
+                        return [[]];
                     } else {
-                        outputs = outputs.map(output => {
-                            return [element].concat(output);
-                        })
+                        return [[element]];
                     }
                 }
-            }
-            return outputs;
-        }).flat();
+            })
 
-        return new CFL(finalPaths);
+            return this.expandMapping(newMappings);
+        }).flat().map(mapping => {
+            // If output contains the variable itself then we must perform the reduction
+            if (ArrayHelper.contains(mapping, activeVariable)) {
+                let index = ArrayHelper.find(mapping, activeVariable);
+                let x1 = mapping.slice(0, index).filter(i => !ObjectHelper.equals(i, Terminal.EPSILON));
+                let x2 = mapping.slice(index + 1, mapping.length).filter(i => !ObjectHelper.equals(i, Terminal.EPSILON));
+
+                let response = [];
+                if (x1.length > 0) {
+                    response.push(PathSegment.from(x1))
+                }
+                if (x2.length > 0) {
+                    response.push(PathSegment.from(x2))
+                }
+
+                return response;
+            }
+            return mapping;
+        })
+
+        exploreStack.pop();
+        finalMap.set(activeVariable, variableMappings);
+
+        return variableMappings;
     }
 
     /* istanbul ignore next */
