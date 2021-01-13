@@ -18,15 +18,24 @@ export default class PathSegment extends Symbol {
         return this._superscript;
     }
 
-    static withSuperscript(superscript, ...data) {
-        return new PathSegment(superscript, data);
+    static withSuperscript(superscript, data) {
+        return this.simplify(superscript, data);
     }
 
-    static from(...data) {
-        return new PathSegment(1, data);
+    static from(data) {
+        return this.withSuperscript(1, data);
     }
 
-    static calculateId(superscript, data) {
+    static simplify(superscript, data) {
+        let first = data[0];
+        if (!data.some(element => !ObjectHelper.equals(element, first))) {
+            return new PathSegment(superscript + data.length - 1, first)
+        } else {
+            return new PathSegment(superscript, data);
+        }
+    }
+
+    static calculateId(superscript, ...data) {
         let map = data.map(x => {
             if (x instanceof Array) {
                 return x.join("");
