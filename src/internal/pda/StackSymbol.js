@@ -8,6 +8,10 @@ export default class StackSymbol extends Symbol {
         super(id);
     }
 
+    /**
+     * @param id
+     * @returns {StackSymbol}
+     */
     static of(id) {
         return new StackSymbol(id);
     }

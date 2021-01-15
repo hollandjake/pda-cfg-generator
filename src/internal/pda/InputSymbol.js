@@ -7,6 +7,10 @@ export default class InputSymbol extends Symbol {
         super(id);
     }
 
+    /**
+     * @param id
+     * @returns {InputSymbol}
+     */
     static of(id) {
         return new InputSymbol(id);
     }

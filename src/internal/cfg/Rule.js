@@ -31,6 +31,26 @@ export default class Rule {
         return this._outputList;
     }
 
+    isMixedOutput() {
+        let hasVariable = false;
+        let hasTerminal = false;
+
+        for (let i = 0, len = this.outputList.length; i < len; i++) {
+            if (this.outputList[i] instanceof Variable) {
+                hasVariable = true;
+                if (hasTerminal) {
+                    return true;
+                }
+            } else if (this.outputList[i] instanceof Terminal) {
+                hasTerminal = true;
+                if (hasVariable) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * Parse a {Rule} from a string using the format <Variable> -> <Variable|Terminal>*
      * @param {String} ruleString

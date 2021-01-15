@@ -6,6 +6,8 @@ import ObjectHelper from "../helper/ObjectHelper.js";
 import Terminal from "./Terminal.js";
 import CFL from "../cfl/CFL.js";
 import CFGSimplify from "./CFGSimplify.js";
+import CFGNormalise from "./CFGNormalise.js";
+import CFGRemapper from "./CFGRemapper.js";
 
 export default class CFG {
     /**
@@ -23,6 +25,7 @@ export default class CFG {
 
         this._rules = Rule.sort(ArrayHelper.distinct(rules));
         this._startVariable = startVariable;
+        this._ghost_variables = [];
     }
 
     get variables() {
@@ -45,10 +48,6 @@ export default class CFG {
         return CFL.fromCFG(this);
     }
 
-    simplify() {
-        return CFGSimplify.simplify(this);
-    }
-
     /**
      * @param {Rule[]} rules
      * @param {Variable} startVariable
@@ -59,7 +58,7 @@ export default class CFG {
         let variables = [];
         let terminals = [];
 
-        ArrayHelper.distinct(rules).forEach(function (rule) {
+        rules.forEach(function (rule) {
             variables.push(rule.inputVariable);
             rule.outputList.forEach(function (symbol) {
                 if (symbol instanceof Variable) {
@@ -77,6 +76,33 @@ export default class CFG {
         }
 
         return new CFG(variables, terminals, rules, startVariable);
+    }
+
+    simplify() {
+        return CFGSimplify.simplify(this);
+    }
+
+    normalise() {
+        return CFGNormalise.normalise(this);
+    }
+
+    remap() {
+        return CFGRemapper.remap(this);
+    }
+
+    nextVariable() {
+        let usedVariables = Symbol.sort(this.variables.concat(this._ghost_variables)).reverse().filter(s => !ObjectHelper.equals(s, Variable.S) && !ObjectHelper.equals(s, Variable.S0));
+        if (usedVariables.length === 0) {
+            usedVariables = [new Variable(String.fromCharCode(64))];
+        }
+        let lastVariable = usedVariables[0].id;
+        let nextCharCode = lastVariable.charCodeAt(0) + 1;
+        if (nextCharCode === 83) {
+            nextCharCode = 84
+        }
+        let nextVariable = new Variable(String.fromCharCode(nextCharCode));
+        this._ghost_variables.push(nextVariable);
+        return nextVariable;
     }
 
     /**

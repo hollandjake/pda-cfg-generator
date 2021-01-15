@@ -88,7 +88,10 @@ test('toCFG', () => {
         new Transition(State.p(3), State.p(4, true), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK)
     ])
 
-    let actual = pda.toCFG().chomsky();
-    let expected = CFG.fromString("S->aaPb, P->aaPb, P->e");
+    let actual = pda.toCFG().remap();
+
+    actual = actual.toCFL();
+
+    let expected = CFG.fromString("S->aaPb, P->aaPb, P->e").toCFL();
     expect(actual).toEqual(expected);
 })
