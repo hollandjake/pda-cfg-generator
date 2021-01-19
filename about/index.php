@@ -1,4 +1,4 @@
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/components/header.php'; ?>
+<?php $title = 'About'; include $_SERVER['DOCUMENT_ROOT'] . '/components/header.php'; ?>
     <style>
         header.mb-5 {
             margin-bottom: auto !important;

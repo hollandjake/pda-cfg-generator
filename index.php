@@ -1,4 +1,4 @@
-<?php include $_SERVER["DOCUMENT_ROOT"] . "/components/header.php" ?>
+<?php $title = 'Tool'; include $_SERVER["DOCUMENT_ROOT"] . "/components/header.php" ?>
     <script src="src/external/viz.min.js"></script>
     <script type="module" src="src/index.js"></script>
     <div class="container background">

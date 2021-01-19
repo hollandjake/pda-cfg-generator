@@ -6,12 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Jake Holland">
-    <title>PDA to CFG Question Generator - About</title>
+    <title>PDA to CFG Question Generator - <?php echo $title ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Favicons -->
+    <?php
+    /*
     <!--    <link rel="apple-touch-icon" href="https://getbootstrap.com/docs/5.0/assets/img/favicons/apple-touch-icon.png"-->
     <!--          sizes="180x180">-->
     <!--    <link rel="icon" href="https://getbootstrap.com/docs/5.0/assets/img/favicons/favicon-32x32.png" sizes="32x32"-->
@@ -22,6 +24,8 @@
     <!--    <link rel="mask-icon" href="https://getbootstrap.com/docs/5.0/assets/img/favicons/safari-pinned-tab.svg"-->
     <!--          color="#7952b3">-->
     <!--    <link rel="icon" href="https://getbootstrap.com/docs/5.0/assets/img/favicons/favicon.ico">-->
+    */
+    ?>
     <meta name="theme-color" content="#7952b3">
 
 
@@ -35,7 +39,7 @@
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="mb-5 text-white text-center">
         <div>
-            <h3 class="float-md-start mb-0">Cover</h3>
+            <h3 class="float-md-start mb-0">PDA to CFG Question Generator</h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
                 <a class="nav-link <?php if (strtok($_SERVER['REQUEST_URI'], '?') === '/') {
 					echo 'active';
