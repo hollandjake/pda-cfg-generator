@@ -4,6 +4,7 @@ import Symbol from "../Symbol.js";
 import InputSymbol from "./InputSymbol.js";
 import StackSymbol from "./StackSymbol.js";
 import Transition from "./Transition.js";
+import PDAConvert from "./PDAConvert.js";
 
 export default class PDA {
     /**
@@ -53,6 +54,13 @@ export default class PDA {
 
     get acceptStates() {
         return this._acceptStates;
+    }
+
+    /**
+     * @return {CFG}
+     */
+    toCFG() {
+        return PDAConvert.toCFG(this);
     }
 
     /**

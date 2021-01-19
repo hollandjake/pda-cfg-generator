@@ -1,0 +1,148 @@
+/*
+ * Globals
+ */
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+    color: #333;
+    text-shadow: none;
+    /* Prevent inheritance from `body` */
+}
+
+/*
+ * Base structure
+ */
+.cover-container {
+    max-width: 42em;
+}
+
+/*
+ * Header
+ */
+.nav-masthead .nav-link {
+    padding: 0.25rem 0;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    background-color: transparent;
+    border-bottom: 0.25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+    border-bottom-color: rgba(255, 255, 255, 0.25);
+}
+
+.nav-masthead .nav-link + .nav-link {
+    margin-left: 1rem;
+}
+
+.nav-masthead .active {
+    color: #fff;
+    border-bottom-color: #fff;
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+.card * {
+    max-width: 100%;
+}
+
+#feedback, #correct_answer {
+    list-style: none;
+    padding-left: 0;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.carousel .content {
+    overflow: hidden;
+}
+
+.carousel .content #question {
+    transform: translateX(100%);
+}
+
+.carousel .content #question.active {
+    transform: translateX(0);
+    transition: transform 2s;
+}
+
+.carousel .content #question.disable {
+    transform: translateX(-100%);
+    transition: transform 2s;
+}
+
+.carousel .content #question #answer-box {
+    max-height: 0;
+    overflow: hidden;
+    border: 0;
+    transition: max-height 1s;
+}
+
+.carousel .carousel-button-container {
+    float: right;
+    margin-top: 50%;
+    margin-right: -125px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.carousel .carousel-button-container .buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.carousel .carousel-button-container button {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.carousel .carousel-button-container .btn {
+    font-size: 2rem;
+    color: white;
+}
+
+.carousel .carousel-button-container .btn i {
+    display: flex;
+    align-items: center;
+}
+
+.carousel .carousel-button-container #current_difficulty {
+    width: 2rem;
+    text-align: center;
+    color: white;
+    float: right;
+    font-size: 1rem;
+    display: inline-block;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: text-bottom;
+    -webkit-font-smoothing: antialiased;
+}
+
+/*# sourceMappingURL=cover.css.map */
