@@ -26,8 +26,8 @@ test('equals [{id:1,name:\'test\'}, {id:1}]', () => {
 })
 
 test('equals [NULL,{id:1,name:\'test\'}]', () => {
-    expect(ObjectHelper.equals(null, {id:1,name:'test'})).toBe(false);
+    expect(ObjectHelper.equals(null, {id: 1, name: 'test'})).toBe(false);
 })
 test('equals [{id:1,name:\'test\'},NULL]', () => {
-    expect(ObjectHelper.equals({id:1,name:'test'}, null)).toBe(false);
+    expect(ObjectHelper.equals({id: 1, name: 'test'}, null)).toBe(false);
 })

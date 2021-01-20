@@ -6,4 +6,12 @@ export default class InputSymbol extends Symbol {
     constructor(id) {
         super(id);
     }
+
+    /**
+     * @param id
+     * @returns {InputSymbol}
+     */
+    static of(id) {
+        return new InputSymbol(id);
+    }
 }

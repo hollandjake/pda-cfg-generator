@@ -1,10 +1,10 @@
 import ArrayHelper from "../helper/ArrayHelper.js";
 import State from "./State.js";
 import Symbol from "../Symbol.js";
-import InputSymbol from "./InputSymbol.js";
 import StackSymbol from "./StackSymbol.js";
 import Transition from "./Transition.js";
 import PDAConvert from "./PDAConvert.js";
+import CFGSimplify from "../cfg/CFGSimplify.js";
 
 export default class PDA {
     /**
@@ -12,7 +12,7 @@ export default class PDA {
      * @param {InputSymbol[]} inputAlphabet (Σ)
      * @param {StackSymbol[]} stackAlphabet (Γ)
      * @param {Transition[]} transitions (δ)
-     * @param {State} startState (q0)
+     * @param {State} startState (p0)
      * @param {State[]} acceptStates (F)
      */
     constructor(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates) {
@@ -30,48 +30,66 @@ export default class PDA {
         this._transitions = ArrayHelper.distinct(transitions);
         this._startState = startState;
         this._acceptStates = Symbol.sort(ArrayHelper.distinct(acceptStates));
+        this._generatedStates = [];
+        this._generatedStackSymbols = [];
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {State[]}
+     */
     get states() {
         return this._states;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {InputSymbol[]}
+     */
     get inputAlphabet() {
         return this._inputAlphabet;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {StackSymbol[]}
+     */
     get stackAlphabet() {
         return this._stackAlphabet;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {Transition[]}
+     */
     get transitions() {
         return this._transitions;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {State}
+     */
     get startState() {
         return this._startState;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {State[]}
+     */
     get acceptStates() {
         return this._acceptStates;
     }
 
     /**
-     * @return {CFG}
-     */
-    toCFG() {
-        /* istanbul ignore next */
-        return PDAConvert.toCFG(this);
-    }
-
-    /**
      * @param {Transition[]} transitions
-     * @param {State} startState Defaults to {State.q0}
+     * @param {State} startState Defaults to {State.p0}
      */
-    static fromTransitions(transitions, startState = State.q0) {
+    static fromTransitions(transitions, startState = State.p0) {
         let states = [];
         let inputAlphabet = [];
-        let stackAlphabet = [StackSymbol.EMPTY_STACK];
+        let stackAlphabet = [];
         let acceptStates = [];
 
         ArrayHelper.distinct(transitions).forEach(transition => {
@@ -91,6 +109,28 @@ export default class PDA {
         }
 
         return new PDA(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates);
+    }
+
+    /* istanbul ignore next */
+    /**
+     * @return {CFG}
+     */
+    toCFG() {
+        return CFGSimplify.simplify(PDAConvert.toCFG(this));
+    }
+
+    generateNewState() {
+        let newState = State.p(-1 * (this._generatedStates.length + 1));
+        this._generatedStates.push(newState);
+
+        return newState;
+    }
+
+    generateNewStackSymbol() {
+        let newSymbol = StackSymbol.of(-1 * (this._generatedStackSymbols.length + 1));
+        this._generatedStackSymbols.push(newSymbol);
+
+        return newSymbol;
     }
 
     /* istanbul ignore next */

@@ -1,14 +1,14 @@
 import Rule from "../../../src/internal/cfg/Rule.js";
 import CFG from "../../../src/internal/cfg/CFG.js";
-import CFGSymbol from "../../../src/internal/cfg/CFGSymbol.js";
 import Variable from "../../../src/internal/cfg/Variable.js";
 import Symbol from "../../../src/internal/Symbol.js";
+import Terminal from "../../../src/internal/cfg/Terminal.js";
 
 test('Creates a CFG', () => {
     let startVariable = Variable.S;
     let variables = [Variable.S];
-    let terminals = [CFGSymbol.of('a')];
-    let rules = [new Rule(Variable.S, [CFGSymbol.of('a')])];
+    let terminals = [Terminal.of('a')];
+    let rules = [new Rule(Variable.S, [Terminal.of('a')])];
     let cfg = new CFG(variables, terminals, rules, startVariable);
     expect(cfg.startVariable).toEqual(startVariable);
     expect(cfg.variables).toEqual(variables);
@@ -31,9 +31,9 @@ test('Throws Error When Constructing CFG with non Variable startVariable', () =>
 test('Creates a CFG from rules', () => {
     let startVariable = Variable.S;
     let variables = [Variable.S];
-    let terminals = [CFGSymbol.of('a')];
+    let terminals = [Terminal.of('a')];
     let rules = [
-        new Rule(Variable.S, [Variable.S, CFGSymbol.of('a')])
+        new Rule(Variable.S, [Variable.S, Terminal.of('a')])
     ];
     let target = new CFG(variables, terminals, rules, startVariable);
 
@@ -59,9 +59,9 @@ test('Throws Error When Creating a CFG from rules and outputList contains a non 
 test('Can parse string input', () => {
     let cfg = CFG.fromString("A->aA,B->bB");
     let target = CFG.fromRules([
-        new Rule(CFGSymbol.of('A'), [CFGSymbol.of('a'), CFGSymbol.of('A')]),
-        new Rule(CFGSymbol.of('B'), [CFGSymbol.of('b'), CFGSymbol.of('B')])
-    ], CFGSymbol.of('A'))
+        new Rule(Variable.of('A'), [Terminal.of('a'), Variable.of('A')]),
+        new Rule(Variable.of('B'), [Terminal.of('b'), Variable.of('B')])
+    ], Variable.of('A'))
     expect(cfg).toEqual(target);
 })
 
@@ -76,7 +76,6 @@ test('Returns null when no rules given to string parser', () => {
 test('Returns null when null given to string parser', () => {
     expect(CFG.fromString(null)).toBe(null);
 })
-
 
 test('Expect error when parsing string input when inputVariable non Variable type', () => {
     expect(() => {

@@ -7,4 +7,12 @@ export default class StackSymbol extends Symbol {
     constructor(id) {
         super(id);
     }
+
+    /**
+     * @param id
+     * @returns {StackSymbol}
+     */
+    static of(id) {
+        return new StackSymbol(id);
+    }
 }

@@ -1,7 +1,6 @@
 import PDA from "../pda/PDA.js";
 import Transition from "../pda/Transition.js";
 import State from "../pda/State.js";
-import PDASymbol from "../pda/PDASymbol.js";
 import StackSymbol from "../pda/StackSymbol.js";
 import InputSymbol from "../pda/InputSymbol.js";
 
@@ -15,45 +14,45 @@ export default class PDAGenerator {
 	static generatePDA(difficulty) {
 		return PDA.fromTransitions([
 			new Transition(
-				State.q0,
-				State.q(1),
-				PDASymbol.of("a"),
+				State.p0,
+				State.p(1),
+				InputSymbol.of("a"),
 				StackSymbol.EPSILON,
-				PDASymbol.of("B")
+				StackSymbol.of("B")
 			),
 			new Transition(
 				State.q(1),
 				State.q(1),
-				PDASymbol.of("a"),
+				InputSymbol.of("a"),
 				StackSymbol.EPSILON,
-				PDASymbol.of("B")
+				StackSymbol.of("B")
 			),
 			new Transition(
 				State.q(1),
 				State.q(2),
 				InputSymbol.EPSILON,
-				PDASymbol.of("B"),
+				StackSymbol.of("B"),
 				StackSymbol.EPSILON
 			),
 			new Transition(
 				State.q(2),
 				State.q(1),
 				InputSymbol.EPSILON,
-				PDASymbol.of("B"),
-				PDASymbol.of("A")
+				StackSymbol.of("B"),
+				StackSymbol.of("A")
 			),
 			new Transition(
 				State.q(1),
 				State.q(3),
-				PDASymbol.of("b"),
-				PDASymbol.of("A"),
+				InputSymbol.of("b"),
+				StackSymbol.of("A"),
 				StackSymbol.EPSILON
 			),
 			new Transition(
 				State.q(3),
 				State.q(3),
-				PDASymbol.of("b"),
-				PDASymbol.of("A"),
+				InputSymbol.of("b"),
+				StackSymbol.of("A"),
 				StackSymbol.EPSILON
 			),
 			new Transition(
