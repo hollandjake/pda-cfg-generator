@@ -3,20 +3,95 @@ import Variable from "./Variable.js";
 import ArrayHelper from "../helper/ArrayHelper.js";
 import MagicMap from "../helper/MagicMap.js";
 import CFG from "./CFG.js";
+import Terminal from "./Terminal.js";
+import Rule from "./Rule.js";
 
 export default class CFGSimplify {
     /**
      * Removes any rules which are not reachable from the start node
      *
      * @param {CFG} cfg
-     * @returns {CFG}
+     *
+     * @return {CFG}
      */
     static simplify(cfg) {
         let newRules = [...cfg.rules];
-        newRules = this.reachability(newRules, cfg);
-        newRules = this.terminality(newRules, cfg);
+        newRules = this.reduce(newRules, cfg); //Remove completely useless rules
+        newRules = this.substitution(newRules, cfg); //Perform substitution
+        newRules = this.reduce(newRules, cfg); //Remove any newly created useless rules
 
         return CFG.fromRules(newRules, cfg.startVariable);
+    }
+
+    /**
+     *
+     * @param {Rule[]} rules
+     * @param {CFG} cfg
+     *
+     * @return {Rule[]}
+     */
+    static substitution(rules, cfg) {
+        /**
+         *
+         * @type {MagicMap<Variable, Terminal>}
+         */
+        let matchingRulesMap;
+        let newRulesTemp;
+        let newRules = [...rules];
+        let removedRules = [];
+
+        do {
+            matchingRulesMap = new MagicMap();
+            newRulesTemp = [];
+
+            newRules.forEach(r => {
+                if (r.outputList.length === 1 && !ObjectHelper.equals(r.inputVariable, cfg.startVariable) && r.outputList[0] instanceof Terminal && !matchingRulesMap.has(r.inputVariable) && !ArrayHelper.contains(removedRules, r)) {
+                    matchingRulesMap.set(r.inputVariable, r.outputList[0]);
+                    removedRules.push(r);
+                } else {
+                    newRulesTemp.push(r);
+                }
+            })
+            newRules = newRulesTemp;
+            newRulesTemp = [...newRules];
+
+            if (matchingRulesMap.size > 0) {
+                newRules.forEach(r => {
+                    let matchedIndices = ArrayHelper.findAllFrom(r.outputList, Array.from(matchingRulesMap.keys()));
+
+                    let powerSet = ArrayHelper.powerSet(Array.from(matchedIndices.keys()));
+
+                    powerSet.forEach(indexArray => {
+                        let newOutput = [...r.outputList];
+                        indexArray.reverse().forEach(i => {
+                            let replacement = matchingRulesMap.get(matchedIndices.get(i));
+                            let isEpsilonReplacement = ObjectHelper.equals(replacement, Terminal.EPSILON);
+
+                            if (isEpsilonReplacement) {
+                                newOutput.splice(i, 1);
+                            } else {
+                                newOutput[i] = replacement;
+                            }
+                        })
+                        if (newOutput.length === 0) {
+                            newOutput = [Terminal.EPSILON];
+                        }
+                        newRules.push(new Rule(r.inputVariable, newOutput));
+                    })
+                })
+                let newRules1 = this.reduce(newRules, cfg);
+                newRules = newRules1;
+            }
+        } while (matchingRulesMap.size > 0);
+
+        return newRules;
+    }
+
+    static reduce(rules, cfg) {
+        let reachability = this.reachability(rules, cfg);
+        let terminality = this.terminality(reachability, cfg);
+        let useless = this.useless(terminality, cfg);
+        return ArrayHelper.distinct(useless);
     }
 
     /**
@@ -24,6 +99,8 @@ export default class CFGSimplify {
      *
      * @param {Rule[]} rules
      * @param {CFG} cfg
+     *
+     * @return {Rule[]}
      */
     static reachability(rules, cfg) {
         let validRules = [];
@@ -55,6 +132,7 @@ export default class CFGSimplify {
      *
      * @param {Rule[]} rules
      * @param {CFG} cfg
+     *
      * @return {Rule[]}
      */
     static terminality(rules, cfg) {
@@ -83,5 +161,16 @@ export default class CFGSimplify {
                 }
             })
         });
+    }
+
+    /**
+     *
+     * @param {Rule[]} rules
+     * @param {CFG} cfg
+     * @return {Rule[]}
+     */
+    static useless(rules, cfg) {
+        //Remove rules which just make themselves e.g. A->A
+        return rules.filter(r => r.outputList.length > 1 || !ObjectHelper.equals(r.outputList[0], r.inputVariable));
     }
 }

@@ -78,18 +78,16 @@ test('Throws Error When Creating a PDA from non Transition transition', () => {
 
 test('toCFG', () => {
     let pda = PDA.fromTransitions([
-        new Transition(State.start, State.p0, InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.EMPTY_STACK),
-        new Transition(State.p0, State.p(1), InputSymbol.of('a'), StackSymbol.EPSILON, StackSymbol.of('b')),
-        new Transition(State.p(1), State.p(1), InputSymbol.of('a'), StackSymbol.EPSILON, StackSymbol.of('b')),
-        new Transition(State.p(1), State.p(2), InputSymbol.EPSILON, StackSymbol.of('b'), StackSymbol.EPSILON),
-        new Transition(State.p(2), State.p(1), InputSymbol.EPSILON, StackSymbol.of('b'), StackSymbol.of('a')),
-        new Transition(State.p(1), State.p(3), InputSymbol.of('b'), StackSymbol.of('a'), StackSymbol.EPSILON),
-        new Transition(State.p(3), State.p(3), InputSymbol.of('b'), StackSymbol.of('a'), StackSymbol.EPSILON),
-        new Transition(State.p(3), State.p(4, true), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EMPTY_STACK)
+        new Transition(State.p0, State.p(1), InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.EMPTY_STACK),
+        new Transition(State.p(1), State.p(1), InputSymbol.of('0'), StackSymbol.EPSILON, StackSymbol.of('0')),
+        new Transition(State.p(1), State.p(1), InputSymbol.of('1'), StackSymbol.EPSILON, StackSymbol.of('1')),
+        new Transition(State.p(1), State.p(2)),
+        new Transition(State.p(2), State.p(2), InputSymbol.of('0'), StackSymbol.of('0'), StackSymbol.EPSILON),
+        new Transition(State.p(2), State.p(2), InputSymbol.of('1'), StackSymbol.of('1'), StackSymbol.EPSILON),
+        new Transition(State.p(2), State.p(3, true), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK),
     ])
 
     let actual = pda.toCFG();
-
 
     let expected = CFG.fromString("S->aaPb, P->aaPb, P->e");
     expect(actual).toEqual(expected);

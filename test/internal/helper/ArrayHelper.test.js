@@ -27,3 +27,25 @@ test('unique with objects', () => {
     let actual = ArrayHelper.distinct(array);
     expect(actual).toEqual(target)
 })
+
+test('powerSet', () => {
+    let array = ['a', 'b', 'c', 'd'];
+
+    expect(ArrayHelper.powerSet(array)).toEqual([
+        ['a'],
+        ['b'],
+        ['a', 'b'],
+        ['c'],
+        ['a', 'c'],
+        ['b', 'c'],
+        ['a', 'b', 'c'],
+        ['d'],
+        ['a', 'd'],
+        ['b', 'd'],
+        ['a', 'b', 'd'],
+        ['c', 'd'],
+        ['a', 'c', 'd'],
+        ['b', 'c', 'd'],
+        ['a', 'b', 'c', 'd'],
+    ])
+})

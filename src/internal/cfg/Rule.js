@@ -37,6 +37,7 @@ export default class Rule {
      * @returns {Rule}
      */
     static fromString(ruleString) {
+        ruleString = ruleString.replace("e", Terminal.EPSILON.id);
         if (ruleString !== null && ruleString.length > 0) {
             let [inputVariable, outputString] = ruleString.split('->');
             inputVariable = CFGString.from(inputVariable.trim());
