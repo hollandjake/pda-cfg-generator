@@ -21,43 +21,43 @@ export default class PDAGenerator {
 				StackSymbol.of("B")
 			),
 			new Transition(
-				State.q(1),
-				State.q(1),
+				State.p(1),
+				State.p(1),
 				InputSymbol.of("a"),
 				StackSymbol.EPSILON,
 				StackSymbol.of("B")
 			),
 			new Transition(
-				State.q(1),
-				State.q(2),
+				State.p(1),
+				State.p(2),
 				InputSymbol.EPSILON,
 				StackSymbol.of("B"),
 				StackSymbol.EPSILON
 			),
 			new Transition(
-				State.q(2),
-				State.q(1),
+				State.p(2),
+				State.p(1),
 				InputSymbol.EPSILON,
 				StackSymbol.of("B"),
 				StackSymbol.of("A")
 			),
 			new Transition(
-				State.q(1),
-				State.q(3),
+				State.p(1),
+				State.p(3),
 				InputSymbol.of("b"),
 				StackSymbol.of("A"),
 				StackSymbol.EPSILON
 			),
 			new Transition(
-				State.q(3),
-				State.q(3),
+				State.p(3),
+				State.p(3),
 				InputSymbol.of("b"),
 				StackSymbol.of("A"),
 				StackSymbol.EPSILON
 			),
 			new Transition(
-				State.q(3),
-				State.q(difficulty, true),
+				State.p(3),
+				State.p(difficulty, true),
 				InputSymbol.EPSILON,
 				StackSymbol.EMPTY_STACK,
 				StackSymbol.EMPTY_STACK

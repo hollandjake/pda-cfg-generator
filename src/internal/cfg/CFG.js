@@ -2,7 +2,6 @@ import Symbol from "../Symbol.js";
 import ArrayHelper from "../helper/ArrayHelper.js";
 import Variable from "./Variable.js";
 import Rule from "./Rule.js";
-import ObjectHelper from "../helper/ObjectHelper.js";
 import Terminal from "./Terminal.js";
 
 export default class CFG {
@@ -96,7 +95,7 @@ export default class CFG {
     }
 
     nextVariable() {
-        let usedVariables = Symbol.sort(this.variables.concat(this._ghost_variables)).reverse().filter(s => !ObjectHelper.equals(s, Variable.S) && !ObjectHelper.equals(s, Variable.S0));
+        let usedVariables = Symbol.sort(this.variables.concat(this._ghost_variables)).reverse().filter(s => !Variable.S.equals(s) && !Variable.S0.equals(s));
         if (usedVariables.length === 0) {
             usedVariables = [new Variable(String.fromCharCode(64))];
         }
@@ -112,6 +111,6 @@ export default class CFG {
 
     /* istanbul ignore next */
     toString() {
-        return `CFG (V = {${this.variables.map(v => v.toString())}}, Σ = {${this.terminals.map(t => t.toString())}}, R, S = ${this.startVariable}) R: [\n\t${this.rules.filter(r => ObjectHelper.equals(r.inputVariable, this.startVariable)).map(r => r.toString()).join(',\n\t')},\n\t${this.rules.filter(r => !ObjectHelper.equals(r.inputVariable, this.startVariable)).map(r => r.toString()).join(',\n\t')}\n]`;
+        return `CFG (V = {${this.variables.map(v => v.toString())}}, Σ = {${this.terminals.map(t => t.toString())}}, R, S = ${this.startVariable}) R: [\n\t${this.rules.filter(r => this.startVariable.equals(r.inputVariable)).map(r => r.toString()).join(',\n\t')},\n\t${this.rules.filter(r => !this.startVariable.equals(r.inputVariable)).map(r => r.toString()).join(',\n\t')}\n]`;
     }
 }

@@ -31,6 +31,14 @@ export default class Rule {
         return this._outputList;
     }
 
+    generatesEpsilon() {
+        return this.outputList.some(o => !Terminal.EPSILON.equals(o));
+    }
+
+    simplify() {
+        let newOutputs = this.outputList.filter(o => !Terminal.EPSILON.equals(o))
+    }
+
     /**
      * Parse a {Rule} from a string using the format <Variable> -> <Variable|Terminal>*
      * @param {String} ruleString

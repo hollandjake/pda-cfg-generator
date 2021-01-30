@@ -45,7 +45,7 @@ export default class CFGSimplify {
             newRulesTemp = [];
 
             newRules.forEach(r => {
-                if (r.outputList.length === 1 && !ObjectHelper.equals(r.inputVariable, cfg.startVariable) && r.outputList[0] instanceof Terminal && !matchingRulesMap.has(r.inputVariable) && !ArrayHelper.contains(removedRules, r)) {
+                if (r.outputList.length === 1 && !cfg.startVariable.equals(r.inputVariable) && r.outputList[0] instanceof Terminal && !matchingRulesMap.has(r.inputVariable) && !ArrayHelper.contains(removedRules, r)) {
                     matchingRulesMap.set(r.inputVariable, r.outputList[0]);
                     removedRules.push(r);
                 } else {
@@ -65,7 +65,7 @@ export default class CFGSimplify {
                         let newOutput = [...r.outputList];
                         indexArray.reverse().forEach(i => {
                             let replacement = matchingRulesMap.get(matchedIndices.get(i));
-                            let isEpsilonReplacement = ObjectHelper.equals(replacement, Terminal.EPSILON);
+                            let isEpsilonReplacement = Terminal.EPSILON.equals(replacement);
 
                             if (isEpsilonReplacement) {
                                 newOutput.splice(i, 1);
@@ -79,8 +79,7 @@ export default class CFGSimplify {
                         newRules.push(new Rule(r.inputVariable, newOutput));
                     })
                 })
-                let newRules1 = this.reduce(newRules, cfg);
-                newRules = newRules1;
+                newRules = this.reduce(newRules, cfg);
             }
         } while (matchingRulesMap.size > 0);
 
@@ -112,7 +111,7 @@ export default class CFGSimplify {
                 variableStack.map(variable => {
                     exploredVariables.push(variable);
                     return rules
-                        .filter(r => ObjectHelper.equals(r.inputVariable, variable)) // Rules generated from variable
+                        .filter(r => variable.equals(r.inputVariable)) // Rules generated from variable
                         .map(r => {
                             validRules.push(r);
                             return r.outputList;
@@ -142,7 +141,7 @@ export default class CFGSimplify {
 
         let ruleMapping = new MagicMap();
         cfg.variables.forEach(v => {
-            ruleMapping.set(v, rules.filter(r => ObjectHelper.equals(r.inputVariable, v)));
+            ruleMapping.set(v, rules.filter(r => v.equals(r.inputVariable)));
         })
 
         do {
@@ -171,6 +170,35 @@ export default class CFGSimplify {
      */
     static useless(rules, cfg) {
         //Remove rules which just make themselves e.g. A->A
-        return rules.filter(r => r.outputList.length > 1 || !ObjectHelper.equals(r.outputList[0], r.inputVariable));
+        rules = rules.filter(r => r.outputList.length > 1 || !r.inputVariable.equals(r.outputList[0]));
+
+        let newRules = [...rules];
+        let changed = false;
+        do {
+            changed = false;
+            let tempRules = [];
+
+            /**
+             * @type {MagicMap<Variable, [[Symbol]]>}
+             */
+            let variableMapping = new MagicMap();
+            cfg.variables.forEach(v => {
+                variableMapping.set(v, newRules.filter(r => r.inputVariable.equals(v)).map(r => r.outputList));
+            })
+
+            newRules.forEach(r => {
+                if (r.outputList.length === 1 && r.outputList[0] instanceof Variable) {
+                    variableMapping.get(r.outputList[0]).forEach(sequence => {
+                        tempRules.push(new Rule(r.inputVariable, sequence));
+                    })
+                    changed = true
+                } else {
+                    tempRules.push(r);
+                }
+            });
+            newRules = ArrayHelper.distinct(tempRules);
+        } while (changed);
+
+        return newRules;
     }
 }

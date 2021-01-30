@@ -49,16 +49,16 @@ export default class PDAConvert {
         //For each transition pair
         transitions.forEach(PR => {
             transitions.filter(SQ => !ObjectHelper.equals(PR, SQ)).forEach(SQ => {
-                if (!ObjectHelper.equals(PR.stackPush, StackSymbol.EPSILON) &&
-                    !ObjectHelper.equals(SQ.stackHead, StackSymbol.EPSILON) &&
+                if (!StackSymbol.EPSILON.equals(PR.stackPush) &&
+                    !StackSymbol.EPSILON.equals(SQ.stackHead) &&
                     ObjectHelper.equals(PR.stackPush, SQ.stackHead)) {
 
                     let outputList = [];
-                    if (!ObjectHelper.equals(PR.input, InputSymbol.EPSILON)) {
+                    if (!InputSymbol.EPSILON.equals(PR.input)) {
                         outputList.push(Terminal.of(PR.input.id));
                     }
                     outputList.push(Variable.A(`${PR.toState.id}${SQ.fromState.id}`));
-                    if (!ObjectHelper.equals(SQ.input, InputSymbol.EPSILON)) {
+                    if (!InputSymbol.EPSILON.equals(SQ.input)) {
                         outputList.push(new Terminal(SQ.input.id));
                     }
                     rules.push(new Rule(
@@ -123,7 +123,7 @@ export default class PDAConvert {
         let acceptState = pda.acceptStates[0];
 
         let startVariable;
-        if (ObjectHelper.equals(startState, State.start)) {
+        if (State.start.equals(startState)) {
             startVariable = Variable.S;
         } else {
             startVariable = Variable.of('S', startState.subscript);

@@ -1,3 +1,5 @@
+import ObjectHelper from "./helper/ObjectHelper.js";
+
 export default class Symbol {
     /**
      * @param {String} id
@@ -12,6 +14,14 @@ export default class Symbol {
 
     static of(id) {
         return new Symbol(id);
+    }
+
+    /**
+     * @param {*} x
+     * @return {boolean}
+     */
+    equals(x) {
+        return ObjectHelper.equals(this, x);
     }
 
     /**

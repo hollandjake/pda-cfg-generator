@@ -80,11 +80,9 @@ test('toCFG', () => {
     let pda = PDA.fromTransitions([
         new Transition(State.p0, State.p(1), InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.EMPTY_STACK),
         new Transition(State.p(1), State.p(1), InputSymbol.of('0'), StackSymbol.EPSILON, StackSymbol.of('0')),
-        new Transition(State.p(1), State.p(1), InputSymbol.of('1'), StackSymbol.EPSILON, StackSymbol.of('1')),
-        new Transition(State.p(1), State.p(2)),
-        new Transition(State.p(2), State.p(2), InputSymbol.of('0'), StackSymbol.of('0'), StackSymbol.EPSILON),
-        new Transition(State.p(2), State.p(2), InputSymbol.of('1'), StackSymbol.of('1'), StackSymbol.EPSILON),
-        new Transition(State.p(2), State.p(3, true), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK),
+        new Transition(State.p(1), State.p(2), InputSymbol.of('1'), StackSymbol.of('0'), StackSymbol.EPSILON),
+        new Transition(State.p(2), State.p(2), InputSymbol.of('1'), StackSymbol.of('0'), StackSymbol.EPSILON),
+        new Transition(State.p(2), State.p(3, true), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EPSILON),
     ])
 
     let actual = pda.toCFG();
