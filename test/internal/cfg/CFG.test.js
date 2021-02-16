@@ -82,3 +82,12 @@ test('Expect error when parsing string input when inputVariable non Variable typ
         CFG.fromString("a->a");
     }).toThrowError();
 })
+
+test('generateVariableStrings', () => {
+    expect(CFG.fromString('S->aAb,S->e,A->a').generateVariableStrings()).toEqual([
+        'S -> ε | aAb',
+        [
+            'A -> a'
+        ]
+    ])
+})

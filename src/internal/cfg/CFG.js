@@ -93,14 +93,22 @@ export default class CFG {
         return null;
     }
 
-    /* istanbul ignore next */
-    toString() {
-        return `CFG (V = {${this.variables.map(v => v.toString())}}, Σ = {${this.terminals.map(t => t.toString())}}, R, S = ${this.startVariable}) R: [\n\t${
-            this.startVariable.toString()} -> ${this.rules.filter(r => this.startVariable.equals(r.inputVariable)).map(r => r.outputString()).join(' | ')
-        },\n\t${
+    generateVariableStrings() {
+        return [
+            `${this.startVariable.toString()} -> ${this.rules.filter(r => this.startVariable.equals(r.inputVariable)).map(r => r.outputString()).join(' | ')}`,
             this.variables.filter(v => !v.equals(this.startVariable)).map(v => {
                 return `${v.toString()} -> ${this.rules.filter(r => r.inputVariable.equals(v)).map(r => r.outputString()).join(' | ')}`;
-            }).join(',\n\t')
+            })
+        ]
+    }
+
+    /* istanbul ignore next */
+    toString() {
+        let [startVariableString, otherVariableStrings] = this.generateVariableStrings();
+        return `CFG (V = {${this.variables.map(v => v.toString())}}, Σ = {${this.terminals.map(t => t.toString())}}, R, S = ${this.startVariable}) R: [\n\t${
+            startVariableString
+        },\n\t${
+            otherVariableStrings.join(',\n\t')
         }\n]`;
     }
 }
