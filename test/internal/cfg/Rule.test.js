@@ -1,14 +1,21 @@
 import Rule from "../../../src/internal/cfg/Rule.js";
 import Variable from "../../../src/internal/cfg/Variable.js";
-import CFGSymbol from "../../../src/internal/cfg/CFGSymbol.js";
+import Terminal from "../../../src/internal/cfg/Terminal.js";
 
 test('Construct new Rule', () => {
-    let S = CFGSymbol.of("S");
+    let S = Variable.S;
     let outputList = [S];
     let newRule = new Rule(S, outputList);
     expect(newRule.inputVariable).toBe(S);
     expect(newRule.outputList).toBe(outputList);
 });
+
+test('Construct new Rule with defaults', () => {
+    let actual = new Rule(Variable.S);
+    let expected = new Rule(Variable.S, [Terminal.EPSILON]);
+
+    expect(actual).toEqual(expected);
+})
 
 test('Expect error when creating a Rule with null inputVariable', () => {
     expect(() => {
@@ -42,8 +49,8 @@ test('Expect error when creating a Rule with empty outputList', () => {
 
 test('Can parse string input', () => {
     let rule = Rule.fromString("A->aA");
-    expect(rule.inputVariable).toEqual(CFGSymbol.of("A"));
-    expect(rule.outputList).toEqual([CFGSymbol.of("a"), CFGSymbol.of("A")]);
+    expect(rule.inputVariable).toEqual(Variable.of("A"));
+    expect(rule.outputList).toEqual([Terminal.of("a"), Variable.of("A")]);
 })
 
 test('Returns null when empty string given to string parser', () => {
@@ -58,4 +65,24 @@ test('Expect error when parsing string input when inputVariable non Variable typ
     expect(() => {
         Rule.fromString("a->a");
     }).toThrowError();
+})
+
+test('Sort Rules', () => {
+    expect(Rule.sort([
+        Rule.fromString("A->A"),
+        Rule.fromString("C->A"),
+        Rule.fromString("B->A"),
+        Rule.fromString("B->AA"),
+        Rule.fromString("B->D"),
+        Rule.fromString("B->C"),
+        Rule.fromString("B->D")
+    ])).toEqual([
+        Rule.fromString("A->A"),
+        Rule.fromString("B->A"),
+        Rule.fromString("B->C"),
+        Rule.fromString("B->D"),
+        Rule.fromString("B->D"),
+        Rule.fromString("B->AA"),
+        Rule.fromString("C->A")
+    ])
 })

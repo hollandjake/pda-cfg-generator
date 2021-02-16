@@ -1,8 +1,8 @@
 import Symbol from "../Symbol.js";
 import ArrayHelper from "../helper/ArrayHelper.js";
 import Variable from "./Variable.js";
-import Terminal from "./Terminal.js";
 import Rule from "./Rule.js";
+import Terminal from "./Terminal.js";
 
 export default class CFG {
     /**
@@ -18,7 +18,7 @@ export default class CFG {
         this._variables = Symbol.sort(ArrayHelper.distinct(variables));
         this._terminals = Symbol.sort(ArrayHelper.distinct(terminals));
 
-        this._rules = ArrayHelper.distinct(rules);
+        this._rules = Rule.sort(ArrayHelper.distinct(rules));
         this._startVariable = startVariable;
     }
 
@@ -41,15 +41,16 @@ export default class CFG {
     /**
      * @param {Rule[]} rules
      * @param {Variable} startVariable
+     *
      * @return CFG
      */
     static fromRules(rules, startVariable = Variable.S) {
         let variables = [];
         let terminals = [];
 
-        ArrayHelper.distinct(rules).forEach(function (rule) {
+        rules.forEach(function (rule) {
             variables.push(rule.inputVariable);
-            rule.outputList.forEach(function (symbol) {
+            rule.outputList.forEach(symbol => {
                 if (symbol instanceof Variable) {
                     variables.push(symbol);
                 } else if (symbol instanceof Terminal) {
@@ -94,6 +95,12 @@ export default class CFG {
 
     /* istanbul ignore next */
     toString() {
-        return `CFG (V = {${this.variables.map(v => v.toString())}}, Σ = {${this.terminals.map(t => t.toString())}}, R, S = ${this.startVariable}) R: [\n\t${this.rules.map(r => r.toString()).join(',\n\t')}\n]`;
+        return `CFG (V = {${this.variables.map(v => v.toString())}}, Σ = {${this.terminals.map(t => t.toString())}}, R, S = ${this.startVariable}) R: [\n\t${
+            this.startVariable.toString()} -> ${this.rules.filter(r => this.startVariable.equals(r.inputVariable)).map(r => r.outputString()).join(' | ')
+        },\n\t${
+            this.variables.filter(v => !v.equals(this.startVariable)).map(v => {
+                return `${v.toString()} -> ${this.rules.filter(r => r.inputVariable.equals(v)).map(r => r.outputString()).join(' | ')}`;
+            }).join(',\n\t')
+        }\n]`;
     }
 }
