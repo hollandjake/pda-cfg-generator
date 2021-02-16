@@ -51,14 +51,15 @@ export default class UIController {
 		this.appendChild(this._correctAnswerBox, startVariable, 'Start Symbol: ');
 		this._correctAnswerBox.appendChild(document.createElement('br'));
 
-		let rules = feedback.targetCFG.rules;
+		let [startVariableString, otherVariableStrings] = feedback.targetCFG.generateVariableStrings();
 
-		rules.filter(r => r.inputVariable.equals(startVariable)).forEach(rule => {
-			this.appendChild(this._correctAnswerBox, rule);
-		})
+		this.appendChild(
+			this._correctAnswerBox,
+			startVariableString
+		);
 
-		rules.filter(r => !r.inputVariable.equals(startVariable)).forEach(rule => {
-			this.appendChild(this._correctAnswerBox, rule);
+		otherVariableStrings.forEach(v => {
+			this.appendChild(this._correctAnswerBox, v)
 		})
 
 		feedback.notes.forEach(note => {
