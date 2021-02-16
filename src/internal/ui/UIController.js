@@ -47,16 +47,22 @@ export default class UIController {
 		this._correctAnswerBox.innerHTML = "";
 		this._feedbackBox.innerHTML = "";
 
-		feedback.targetCFG.rules.forEach(rule => {
-			let ruleElement = document.createElement('li');
-			ruleElement.innerText = rule.toString();
-			this._correctAnswerBox.appendChild(ruleElement);
+		let startVariable = feedback.targetCFG.startVariable;
+		this.appendChild(this._correctAnswerBox, startVariable, 'Start Symbol: ');
+		this._correctAnswerBox.appendChild(document.createElement('br'));
+
+		let rules = feedback.targetCFG.rules;
+
+		rules.filter(r => r.inputVariable.equals(startVariable)).forEach(rule => {
+			this.appendChild(this._correctAnswerBox, rule);
+		})
+
+		rules.filter(r => !r.inputVariable.equals(startVariable)).forEach(rule => {
+			this.appendChild(this._correctAnswerBox, rule);
 		})
 
 		feedback.notes.forEach(note => {
-			let noteElement = document.createElement('li');
-			noteElement.innerText = note;
-			this._feedbackBox.appendChild(noteElement);
+			this.appendChild(this._feedbackBox, note);
 		})
 
 		let panel = this._answerBox;
@@ -74,5 +80,11 @@ export default class UIController {
 		this._difficulty = Math.max(Math.min(this._difficulty + n, 10), 1);
 
 		return this._difficulty;
+	}
+
+	appendChild(parent, child, extraText = '') {
+		let element = document.createElement('li');
+		element.innerText = extraText + child.toString();
+		parent.append(element);
 	}
 }
