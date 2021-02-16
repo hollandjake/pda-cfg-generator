@@ -33,14 +33,15 @@ export default class UIController {
 			this.hideFeedback();
 		}
 
-		let pda = PDAGenerator.generatePDA(difficulty);
+		let [pda, cfg] = PDAGenerator.generatePair(difficulty);
+
 		sleep(2000).then(r => {
 			this._questionContainer.classList.remove('disable');
 			this._pdaRenderer.render(pda);
 			sleep(100).then(r => this._questionContainer.classList.add('active')); // Give it some time to load image
 		});
 
-		return [pda, pda.toCFG()];
+		return [pda, cfg];
 	}
 
 	showFeedback(feedback) {
