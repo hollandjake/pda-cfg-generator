@@ -116,7 +116,7 @@ export default class PDA {
      * @return {CFG}
      */
     toCFG() {
-        return CFGSimplify.simplify(PDAConvert.toCFG(this));
+        return CFGSimplify.simplify(PDAConvert.toCFG(this)).remap();
     }
 
     generateNewState() {

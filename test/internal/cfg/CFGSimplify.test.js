@@ -85,3 +85,10 @@ test('sd', () => {
 
     expect(CFGSimplify.simplify(cfg)).toEqual(CFG.fromString('S->e'));
 })
+
+test('testing', () => {
+    let cfg = CFG.fromString('S->AB,A->aA,A->e,B->bB,B->e');
+
+    let actual1 = CFGSimplify.simplify(cfg);
+    expect(actual1).toEqual(CFG.fromString('S->b'));
+})

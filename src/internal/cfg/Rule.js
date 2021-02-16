@@ -103,6 +103,10 @@ export default class Rule {
 
     /* istanbul ignore next */
     toString() {
-        return `${this._inputVariable} → ${this.outputList.map(s => s.id).join('')}`;
+        return `${this._inputVariable} → ${this.outputString()}`;
+    }
+
+    outputString() {
+        return this.outputList.map(s => s.id).join('');
     }
 }

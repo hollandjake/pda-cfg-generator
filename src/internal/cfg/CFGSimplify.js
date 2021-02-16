@@ -20,7 +20,9 @@ export default class CFGSimplify {
         newRules = this.substitution(newRules, cfg); //Perform substitution
         newRules = this.reduce(newRules, cfg); //Remove any newly created useless rules
 
-        return CFG.fromRules(newRules, cfg.startVariable);
+        let processedCFG = CFG.fromRules(newRules, cfg.startVariable);
+
+        return processedCFG;
     }
 
     /**

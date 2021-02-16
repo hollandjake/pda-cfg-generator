@@ -9,8 +9,8 @@ test('remaps correctly', () => {
 
     let actual = CFGRemapper.remap(cfg);
     expect(actual).toEqual(CFG.fromRules([
-        new Rule(Variable.A(0)),
-        new Rule(Variable.A(0), [Variable.A(1), Variable.A(0)]),
-        new Rule(Variable.A(1), [Terminal.of('a')])
-    ], Variable.A(0)));
+        new Rule(Variable.V(0), [Variable.V(1), Variable.V(0)]),
+        new Rule(Variable.V(1), [Terminal.of('a')]),
+        new Rule(Variable.V(0), [Terminal.EPSILON])
+    ], Variable.V(0)));
 })
