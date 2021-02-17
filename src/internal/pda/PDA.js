@@ -25,9 +25,22 @@ export default class PDA {
         this._states = Symbol.sort(ArrayHelper.distinct(states));
         this._inputAlphabet = Symbol.sort(ArrayHelper.distinct(inputAlphabet));
         this._stackAlphabet = Symbol.sort(ArrayHelper.distinct(stackAlphabet));
-        this._transitions = ArrayHelper.distinct(transitions);
+        this._transitions = Transition.sort(ArrayHelper.distinct(transitions));
         this._startState = startState;
         this._acceptStates = Symbol.sort(ArrayHelper.distinct(acceptStates));
+        this._generatedStates = [];
+    }
+
+    /* istanbul ignore next */
+    /**
+     * @return {CFG}
+     */
+    toCFG() {
+        return PDAConvert.toCFG(this);
+    }
+
+    isEasy() {
+        return this.acceptStates.length === 1 && this.acceptStates[0].equals(State.accept) && !this.transitions.some(t => t.isEasy());
     }
 
     /* istanbul ignore next */
@@ -79,6 +92,16 @@ export default class PDA {
     }
 
     /**
+     * @returns {State}
+     */
+    generateNewState() {
+        let newState = State.p(-1 * (this._generatedStates.length + 1));
+        this._generatedStates.push(newState);
+
+        return newState;
+    }
+
+    /**
      * @param {Transition[]} transitions
      * @param {State} startState Defaults to {State.p0}
      */
@@ -105,14 +128,6 @@ export default class PDA {
         }
 
         return new PDA(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates);
-    }
-
-    /* istanbul ignore next */
-    /**
-     * @return {CFG}
-     */
-    toCFG() {
-        return PDAConvert.toCFG(this);
     }
 
     /* istanbul ignore next */

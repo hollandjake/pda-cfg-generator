@@ -10,7 +10,6 @@ export default class Transition {
      * @param {StackSymbol} stackHead
      * @param {StackSymbol} stackPush
      */
-
     constructor(fromState, toState, input = InputSymbol.EPSILON, stackHead = StackSymbol.EPSILON, stackPush = StackSymbol.EPSILON) {
         if (fromState === null || typeof fromState !== "object" || !(fromState instanceof State)) {
             throw new Error("'fromState' is not of type 'State'");
@@ -39,22 +38,42 @@ export default class Transition {
         this._stackPush = stackPush;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {State}
+     */
     get fromState() {
         return this._fromState;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {State}
+     */
     get toState() {
         return this._toState;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {InputSymbol}
+     */
     get input() {
         return this._input;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {StackSymbol}
+     */
     get stackHead() {
         return this._stackHead;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {StackSymbol}
+     */
     get stackPush() {
         return this._stackPush;
     }
@@ -112,6 +131,10 @@ export default class Transition {
 
             return 0;
         });
+    }
+
+    isEasy() {
+        return (StackSymbol.EPSILON.equals(this.stackPush) && StackSymbol.EPSILON.equals(this.stackHead)) || (!StackSymbol.EPSILON.equals(this.stackPush) && !StackSymbol.EPSILON.equals(this.stackHead));
     }
 
     withoutAccept() {
