@@ -108,4 +108,49 @@ export default class ArrayHelper {
 
         return newArray;
     }
+
+    /**
+     * @param {[]} array1
+     * @param {[]} array2
+     * @returns {boolean}
+     */
+    static equals(array1, array2) {
+        if (array1 === array2) {
+            return true;
+        }
+        if (array1 === null || array2 === null) {
+            return false;
+        }
+
+        if (array1.length !== array2.length) {
+            return false;
+        }
+
+        let aMap = new MagicMap();
+        let bMap = new MagicMap();
+
+        array1.forEach(i => {
+            if (aMap.has(i)) {
+                aMap.set(i, aMap.get(i) + 1)
+            } else {
+                aMap.set(i, 1);
+            }
+        })
+
+        array2.forEach(i => {
+            if (bMap.has(i)) {
+                bMap.set(i, bMap.get(i) + 1)
+            } else {
+                bMap.set(i, 1);
+            }
+        })
+
+        let keys = Array.from(aMap.keys());
+        for (let i = 0; i < keys.length; i++) {
+            if (!bMap.has(keys[i]) || bMap.get(keys[i]) !== aMap.get(keys[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

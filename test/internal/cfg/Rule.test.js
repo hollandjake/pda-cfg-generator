@@ -86,3 +86,9 @@ test('Sort Rules', () => {
         Rule.fromString("C->A")
     ])
 })
+
+test('terminates', () => {
+    expect(Rule.fromString('S->a').terminates()).toBeTruthy();
+    expect(Rule.fromString('S->A').terminates()).toBeFalsy();
+    expect(Rule.fromString('S->A').terminates([Variable.of('A')])).toBeTruthy();
+})

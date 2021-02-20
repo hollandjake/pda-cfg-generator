@@ -3,6 +3,10 @@ import State from "../../../src/internal/pda/State.js";
 import Transition from "../../../src/internal/pda/Transition.js";
 import InputSymbol from "../../../src/internal/pda/InputSymbol.js";
 import StackSymbol from "../../../src/internal/pda/StackSymbol.js";
+import CFG from "../../../src/internal/cfg/CFG.js";
+import Rule from "../../../src/internal/cfg/Rule.js";
+import Variable from "../../../src/internal/cfg/Variable.js";
+import Terminal from "../../../src/internal/cfg/Terminal.js";
 
 test('Creates a PDA', () => {
     let acceptingState = State.p(1, true);
@@ -111,4 +115,24 @@ test('isEasy accept state not State.accept', () => {
     ], State.start)
 
     expect(pda.isEasy()).toBeFalsy();
+})
+
+test('toCFG', () => {
+    let pda = PDA.fromTransitions([
+        new Transition(State.p0, State.p(1), InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.EMPTY_STACK),
+        new Transition(State.p(1), State.p(1), InputSymbol.of('a'), StackSymbol.EPSILON, StackSymbol.of('A')),
+        new Transition(State.p(1), State.p(2), InputSymbol.of('b'), StackSymbol.of('A'), StackSymbol.EPSILON),
+        new Transition(State.p(2), State.p(2), InputSymbol.of('b'), StackSymbol.of('A'), StackSymbol.EPSILON),
+        new Transition(State.p(2), State.p(3, true), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EPSILON),
+    ])
+
+    let actual = pda.toCFG();
+
+    let expected = CFG.fromRules([
+        new Rule(Variable.A('p1p2'), [Terminal.of('a'), Terminal.of('b')]),
+        new Rule(Variable.A('p1p2'), [Terminal.of('a'), Variable.A('p1p2'), Terminal.of('b')]),
+        new Rule(Variable.S, [Terminal.of('a'), Terminal.of('b')]),
+        new Rule(Variable.S, [Terminal.of('a'), Variable.A('p1p2'), Terminal.of('b')]),
+    ]);
+    expect(actual).toEqual(expected);
 })

@@ -3,6 +3,7 @@ import State from "./State.js";
 import Symbol from "../Symbol.js";
 import Transition from "./Transition.js";
 import PDAConvert from "./PDAConvert.js";
+import CFGSimplify from "../cfg/CFGSimplify.js";
 
 export default class PDA {
     /**
@@ -36,7 +37,7 @@ export default class PDA {
      * @return {CFG}
      */
     toCFG() {
-        return PDAConvert.toCFG(this);
+        return CFGSimplify.simplify(PDAConvert.toCFG(this));
     }
 
     isEasy() {

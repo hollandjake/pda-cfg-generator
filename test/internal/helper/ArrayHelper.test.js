@@ -67,3 +67,40 @@ test('powerSet', () => {
         ['a', 'b', 'c', 'd'],
     ])
 })
+
+test('equals with same object', () => {
+    let array = [0, 1, 2, 3];
+    expect(ArrayHelper.equals(array, array)).toBeTruthy();
+})
+
+test('equals with null', () => {
+    expect(ArrayHelper.equals([0, 1, 2, 3], null)).toBeFalsy();
+})
+
+test('equals with both null', () => {
+    expect(ArrayHelper.equals(null, null)).toBeTruthy()
+})
+
+test('equals', () => {
+    expect(ArrayHelper.equals([
+        'a', 'b', {id: 'c'}, 'd', 'a'
+    ], [
+        {id: 'c'}, 'b', 'd', 'a', 'a'
+    ])).toBeTruthy();
+})
+
+test('equals array length check', () => {
+    expect(ArrayHelper.equals([
+        'a', 'b',
+    ], [
+        {id: 'c'}, 'b', 'd'
+    ])).toBeFalsy();
+})
+
+test('equals failure case', () => {
+    expect(ArrayHelper.equals([
+        'a', 'b', 'c'
+    ], [
+        {id: 'c'}, 'b', 'd'
+    ])).toBeFalsy();
+})
