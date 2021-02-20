@@ -17,6 +17,10 @@ export default class Variable extends Symbol {
         return new Variable('V', subscript);
     }
 
+    static A(subscript) {
+        return new Variable('A', subscript);
+    }
+
     /**
      * @param id
      * @param subscript

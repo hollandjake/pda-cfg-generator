@@ -1,6 +1,7 @@
 import State from "./State.js";
 import InputSymbol from "./InputSymbol.js";
 import StackSymbol from "./StackSymbol.js";
+import ObjectHelper from "../helper/ObjectHelper.js";
 
 export default class Transition {
     /**
@@ -78,11 +79,6 @@ export default class Transition {
         return this._stackPush;
     }
 
-    /* istanbul ignore next */
-    toString() {
-        return `(${this.toState}, ${this.stackPush}) ∈ δ(${this.fromState}, ${this.input}, ${this.stackHead})`;
-    }
-
     /**
      *
      * @param {Transition[]} transitions
@@ -133,11 +129,20 @@ export default class Transition {
         });
     }
 
+    /* istanbul ignore next */
+    toString() {
+        return `(${this.toState}, ${this.stackPush}) ∈ δ(${this.fromState}, ${this.input}, ${this.stackHead})`;
+    }
+
     isEasy() {
-        return (StackSymbol.EPSILON.equals(this.stackPush) && StackSymbol.EPSILON.equals(this.stackHead)) || (!StackSymbol.EPSILON.equals(this.stackPush) && !StackSymbol.EPSILON.equals(this.stackHead));
+        return StackSymbol.EPSILON.equals(this.stackPush) ^ StackSymbol.EPSILON.equals(this.stackHead);
     }
 
     withoutAccept() {
         return new Transition(this.fromState.withoutAccept(), this.toState.withoutAccept(), this.input, this.stackHead, this.stackPush);
+    }
+
+    equals(x) {
+        return ObjectHelper.equals(this, x);
     }
 }

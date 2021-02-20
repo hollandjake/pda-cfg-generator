@@ -40,7 +40,10 @@ export default class PDA {
     }
 
     isEasy() {
-        return this.acceptStates.length === 1 && this.acceptStates[0].equals(State.accept) && !this.transitions.some(t => t.isEasy());
+        return this.startState.equals(State.start) &&
+            this.acceptStates.length === 1 &&
+            this.acceptStates[0].equals(State.accept) &&
+            this.transitions.every(t => t.isEasy());
     }
 
     /* istanbul ignore next */

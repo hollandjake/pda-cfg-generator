@@ -74,3 +74,41 @@ test('Throws Error When Creating a PDA from non Transition transition', () => {
         PDA.fromTransitions([null])
     }).toThrowError();
 })
+
+test('isEasy true', () => {
+    let pda = PDA.fromTransitions([
+        new Transition(State.start, State.p0, InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.of('A')),
+        new Transition(State.p0, State.accept, InputSymbol.EPSILON, StackSymbol.of('A'), StackSymbol.EPSILON)
+    ], State.start)
+
+    expect(pda.isEasy()).toBeTruthy();
+})
+
+test('isEasy one transition isn\'t easy', () => {
+    let pda = PDA.fromTransitions([
+        new Transition(State.start, State.p0, InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.of('A')),
+        new Transition(State.p0, State.accept, InputSymbol.EPSILON, StackSymbol.of('A'), StackSymbol.of('A'))
+    ], State.start)
+
+    expect(pda.isEasy()).toBeFalsy();
+})
+
+test('isEasy two accept states', () => {
+    let pda = PDA.fromTransitions([
+        new Transition(State.start, State.p0, InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.of('A')),
+        new Transition(State.p0, State.accept, InputSymbol.EPSILON, StackSymbol.of('A'), StackSymbol.EPSILON),
+        new Transition(State.p0, State.p(1, true), InputSymbol.EPSILON, StackSymbol.of('A'), StackSymbol.EPSILON)
+    ], State.start)
+
+    expect(pda.isEasy()).toBeFalsy();
+})
+
+test('isEasy accept state not State.accept', () => {
+    let pda = PDA.fromTransitions([
+        new Transition(State.start, State.p0, InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.of('A')),
+        new Transition(State.p0, State.p(1, true), InputSymbol.EPSILON, StackSymbol.of('A'), StackSymbol.EPSILON),
+        new Transition(State.p0, State.p(2, true), InputSymbol.EPSILON, StackSymbol.of('A'), StackSymbol.EPSILON)
+    ], State.start)
+
+    expect(pda.isEasy()).toBeFalsy();
+})
