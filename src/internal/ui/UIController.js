@@ -1,5 +1,6 @@
 import Renderer from "../helper/Renderer.js";
 import PDAGenerator from "../generator/PDAGenerator.js";
+import CFGRemapper from "../cfg/CFGRemapper.js";
 
 function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
@@ -40,7 +41,7 @@ export default class UIController {
 			sleep(100).then(r => this._questionContainer.classList.add('active')); // Give it some time to load image
 		});
 
-		return [pda, pda.toCFG()];
+		return [pda, CFGRemapper.remap(pda.toCFG())];
 	}
 
 	showFeedback(feedback) {
