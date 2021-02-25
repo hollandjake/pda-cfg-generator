@@ -23,6 +23,6 @@ export default class MagicSet extends Set {
     }
 
     delete(item) {
-        this._map.delete(item);
+        return this._map.delete(item);
     }
 }

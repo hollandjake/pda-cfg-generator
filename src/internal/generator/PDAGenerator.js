@@ -4,6 +4,7 @@ import State from "../pda/State.js";
 import StackSymbol from "../pda/StackSymbol.js";
 import InputSymbol from "../pda/InputSymbol.js";
 
+/* istanbul ignore file */
 export default class PDAGenerator {
     /**
      *

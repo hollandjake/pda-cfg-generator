@@ -1,7 +1,6 @@
 import Rule from "../../../src/internal/cfg/Rule.js";
 import CFG from "../../../src/internal/cfg/CFG.js";
 import CFGSimplify from "../../../src/internal/cfg/CFGSimplify.js";
-import PDAGenerator from "../../../src/internal/generator/PDAGenerator.js";
 
 test('substitution', () => {
     let cfg = CFG.fromString("S->aB, A->aaA,A->abBc,B->aA,B->b");
@@ -102,9 +101,9 @@ test('simplify with recursion', () => {
 })
 
 
-test('test', () => {
-    let pda = PDAGenerator.generatePDA(5);
-    let cfg = pda.toCFG();
-
-    expect(cfg).toEqual(CFG.fromRules([]))
-})
+// test('test', () => {
+//     let pda = PDAGenerator.generatePDA(5);
+//     let cfg = pda.toCFG();
+//
+//     expect(cfg).toEqual(CFG.fromRules([]))
+// })
