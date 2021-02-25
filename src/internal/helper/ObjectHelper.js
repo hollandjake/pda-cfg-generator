@@ -5,14 +5,15 @@ export default class ObjectHelper {
             return item1 == item2;
         }
 
-        for (let prop in item1) {
-            if (!ObjectHelper.equals(item1[prop], item2[prop])) {
-                return false;
-            }
+        let keys1 = Object.keys(item1);
+        let keys2 = Object.keys(item2);
+
+        if (keys1.toString() !== keys2.toString() && keys1.sort().toString() !== keys2.sort().toString()) {
+            return false;
         }
 
-        for (let prop in item2) {
-            if (!ObjectHelper.equals(item1[prop], item2[prop])) {
+        for (let i = 0, len = keys1.length; i < len; i++) {
+            if (!ObjectHelper.equals(item1[keys1[i]], item2[keys1[i]])) {
                 return false;
             }
         }

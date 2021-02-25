@@ -1,5 +1,6 @@
 import ObjectHelper from "./ObjectHelper.js";
 import MagicMap from "./MagicMap.js";
+import MagicSet from "./MagicSet.js";
 
 export default class ArrayHelper {
     /**
@@ -102,11 +103,9 @@ export default class ArrayHelper {
      * @returns {Array}
      */
     static distinct(array) {
-        let newArray = [];
-
-        array.forEach(item => ArrayHelper.push_distinct(newArray, item));
-
-        return newArray;
+        let set = new MagicSet();
+        array.forEach(item => set.add(item))
+        return Array.from(set);
     }
 
     /**

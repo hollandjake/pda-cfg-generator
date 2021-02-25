@@ -240,7 +240,7 @@ export default class CFGSimplify {
             });
 
             if (nonEpsilonRules.length === 1 && nonEpsilonRules[0].outputList.every(o => o.equals(variable))) {
-                variableMapping.set(variable, new Rule(variable));
+                variableMapping.set(variable, [new Rule(variable)]);
             }
         })
 

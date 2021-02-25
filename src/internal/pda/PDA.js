@@ -34,21 +34,6 @@ export default class PDA {
 
     /* istanbul ignore next */
     /**
-     * @return {CFG}
-     */
-    toCFG() {
-        return CFGSimplify.simplify(PDAConvert.toCFG(this));
-    }
-
-    isEasy() {
-        return this.startState.equals(State.start) &&
-            this.acceptStates.length === 1 &&
-            this.acceptStates[0].equals(State.accept) &&
-            this.transitions.every(t => t.isEasy());
-    }
-
-    /* istanbul ignore next */
-    /**
      * @returns {State[]}
      */
     get states() {
@@ -96,16 +81,6 @@ export default class PDA {
     }
 
     /**
-     * @returns {State}
-     */
-    generateNewState() {
-        let newState = State.p(-1 * (this._generatedStates.length + 1));
-        this._generatedStates.push(newState);
-
-        return newState;
-    }
-
-    /**
      * @param {Transition[]} transitions
      * @param {State} startState Defaults to {State.p0}
      */
@@ -132,6 +107,31 @@ export default class PDA {
         }
 
         return new PDA(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates);
+    }
+
+    /* istanbul ignore next */
+    /**
+     * @return {CFG}
+     */
+    toCFG() {
+        return CFGSimplify.simplify(PDAConvert.toCFG(this));
+    }
+
+    isEasy() {
+        return this.startState.equals(State.start) &&
+            this.acceptStates.length === 1 &&
+            this.acceptStates[0].equals(State.accept) &&
+            this.transitions.every(t => t.isEasy());
+    }
+
+    /**
+     * @returns {State}
+     */
+    generateNewState() {
+        let newState = State.p(-1 * (this._generatedStates.length + 1));
+        this._generatedStates.push(newState);
+
+        return newState;
     }
 
     /* istanbul ignore next */

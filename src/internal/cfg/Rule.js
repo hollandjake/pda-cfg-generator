@@ -33,20 +33,6 @@ export default class Rule {
     }
 
     /**
-     * Calculates if the rule is a terminating given a list of already known terminating variables.
-     *
-     * @param {Variable[]} terminatingVariables
-     * @returns {boolean}
-     */
-    terminates(terminatingVariables = []) {
-        return this.outputList.every(o => o instanceof Terminal || ArrayHelper.contains(terminatingVariables, o));
-    }
-
-    isEpsilonRule() {
-        return this.outputList.every(o => o.equals(Terminal.EPSILON));
-    }
-
-    /**
      * Parse a {Rule} from a string using the format <Variable> -> <Variable|Terminal>*
      * @param {String} ruleString
      * @returns {Rule}
@@ -106,6 +92,20 @@ export default class Rule {
 
             return 0;
         });
+    }
+
+    /**
+     * Calculates if the rule is a terminating given a list of already known terminating variables.
+     *
+     * @param {Variable[]} terminatingVariables
+     * @returns {boolean}
+     */
+    terminates(terminatingVariables = []) {
+        return this.outputList.every(o => o instanceof Terminal || ArrayHelper.contains(terminatingVariables, o));
+    }
+
+    isEpsilonRule() {
+        return this.outputList.every(o => o.equals(Terminal.EPSILON));
     }
 
     /* istanbul ignore next */
