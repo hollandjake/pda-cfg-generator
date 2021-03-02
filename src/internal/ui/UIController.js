@@ -63,6 +63,10 @@ export default class UIController {
             this.appendChild(this._correctAnswerBox, v)
         })
 
+        this._correctAnswerBox.appendChild(document.createElement('br'));
+        this._correctAnswerBox.appendChild(document.createElement('br'));
+        this.appendChild(this._correctAnswerBox, feedback.targetCFL);
+
         feedback.notes.forEach(note => {
             this.appendChild(this._feedbackBox, note);
         })

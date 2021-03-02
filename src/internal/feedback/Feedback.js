@@ -1,3 +1,5 @@
+import CFL from "../cfl/CFL.js";
+
 export default class Feedback {
 
     constructor(targetCFG, studentCFG) {
@@ -9,6 +11,10 @@ export default class Feedback {
 
     get targetCFG() {
         return this._targetCFG;
+    }
+
+    get targetCFL() {
+        return CFL.fromCFG(this._targetCFG);
     }
 
     get studentCFG() {
