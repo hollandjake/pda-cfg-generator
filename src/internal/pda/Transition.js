@@ -1,6 +1,7 @@
 import State from "./State.js";
 import InputSymbol from "./InputSymbol.js";
 import StackSymbol from "./StackSymbol.js";
+import ObjectHelper from "../helper/ObjectHelper.js";
 
 export default class Transition {
     /**
@@ -10,7 +11,6 @@ export default class Transition {
      * @param {StackSymbol} stackHead
      * @param {StackSymbol} stackPush
      */
-
     constructor(fromState, toState, input = InputSymbol.EPSILON, stackHead = StackSymbol.EPSILON, stackPush = StackSymbol.EPSILON) {
         if (fromState === null || typeof fromState !== "object" || !(fromState instanceof State)) {
             throw new Error("'fromState' is not of type 'State'");
@@ -39,29 +39,44 @@ export default class Transition {
         this._stackPush = stackPush;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {State}
+     */
     get fromState() {
         return this._fromState;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {State}
+     */
     get toState() {
         return this._toState;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {InputSymbol}
+     */
     get input() {
         return this._input;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {StackSymbol}
+     */
     get stackHead() {
         return this._stackHead;
     }
 
+    /* istanbul ignore next */
+    /**
+     * @returns {StackSymbol}
+     */
     get stackPush() {
         return this._stackPush;
-    }
-
-    /* istanbul ignore next */
-    toString() {
-        return `(${this.toState}, ${this.stackPush}) ∈ δ(${this.fromState}, ${this.input}, ${this.stackHead})`;
     }
 
     /**
@@ -114,7 +129,20 @@ export default class Transition {
         });
     }
 
+    /* istanbul ignore next */
+    toString() {
+        return `(${this.toState}, ${this.stackPush}) ∈ δ(${this.fromState}, ${this.input}, ${this.stackHead})`;
+    }
+
+    isEasy() {
+        return StackSymbol.EPSILON.equals(this.stackPush) ^ StackSymbol.EPSILON.equals(this.stackHead);
+    }
+
     withoutAccept() {
         return new Transition(this.fromState.withoutAccept(), this.toState.withoutAccept(), this.input, this.stackHead, this.stackPush);
+    }
+
+    equals(x) {
+        return ObjectHelper.equals(this, x);
     }
 }

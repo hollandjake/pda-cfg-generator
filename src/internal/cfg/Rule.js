@@ -1,6 +1,7 @@
 import Variable from "./Variable.js";
 import CFGString from "./CFGString.js";
 import Terminal from "./Terminal.js";
+import ArrayHelper from "../helper/ArrayHelper.js";
 
 export default class Rule {
 
@@ -91,6 +92,20 @@ export default class Rule {
 
             return 0;
         });
+    }
+
+    /**
+     * Calculates if the rule is a terminating given a list of already known terminating variables.
+     *
+     * @param {Variable[]} terminatingVariables
+     * @returns {boolean}
+     */
+    terminates(terminatingVariables = []) {
+        return this.outputList.every(o => o instanceof Terminal || ArrayHelper.contains(terminatingVariables, o));
+    }
+
+    isEpsilonRule() {
+        return this.outputList.every(o => o.equals(Terminal.EPSILON));
     }
 
     /* istanbul ignore next */

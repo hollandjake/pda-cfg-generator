@@ -5,6 +5,10 @@ export default class Renderer {
         this._graphElement = graphElement;
     }
 
+    get graphElement() {
+        return this._graphElement;
+    }
+
     /**
      *
      * @param {PDA} pda
@@ -29,10 +33,6 @@ export default class Renderer {
     }
 
     /**
-     * @param {PDA} pda
-     */
-
-    /**
      * @param {string} html
      */
     static mapToLatex(html) {
@@ -51,6 +51,10 @@ export default class Renderer {
     }
 
     /* istanbul ignore next */
+    /**
+     * @param {PDA} pda
+     * @param {boolean} forLatex
+     */
     render(pda, forLatex = false) {
         let dotNotation = Renderer.convertToDotNotation(pda);
 
@@ -64,9 +68,5 @@ export default class Renderer {
             console.error(e);
             this._graphElement.innerHTML = "";
         }
-    }
-
-    get graphElement() {
-        return this._graphElement;
     }
 }

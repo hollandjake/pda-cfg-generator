@@ -125,3 +125,20 @@ test('withoutAccept', () => {
 
     expect(transition.withoutAccept()).toEqual(expected);
 })
+
+
+test('isEasy e->e', () => {
+    expect(new Transition(State.p0, State.p(1), InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.EPSILON).isEasy()).toBeFalsy();
+})
+
+test('isEasy e->A', () => {
+    expect(new Transition(State.p0, State.p(1), InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.of('A')).isEasy()).toBeTruthy();
+})
+
+test('isEasy A->e', () => {
+    expect(new Transition(State.p0, State.p(1), InputSymbol.EPSILON, StackSymbol.of('A'), StackSymbol.EPSILON).isEasy()).toBeTruthy();
+})
+
+test('isEasy A->A', () => {
+    expect(new Transition(State.p0, State.p(1), InputSymbol.EPSILON, StackSymbol.of('A'), StackSymbol.of('A')).isEasy()).toBeFalsy();
+})

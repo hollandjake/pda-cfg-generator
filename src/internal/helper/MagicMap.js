@@ -9,4 +9,9 @@ export default class MagicMap extends Map {
         let keys = Array.from(super.keys());
         return super.get(keys[ArrayHelper.find(keys, key)]);
     }
+
+    delete(key) {
+        let keys = Array.from(super.keys());
+        return super.delete(keys[ArrayHelper.find(keys, key)]);
+    }
 }

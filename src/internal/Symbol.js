@@ -20,10 +20,6 @@ export default class Symbol {
      * @param {*} x
      * @return {boolean}
      */
-    /* istanbul ignore next */
-    equals(x) {
-        return ObjectHelper.equals(this, x);
-    }
 
     /**
      *
@@ -39,6 +35,11 @@ export default class Symbol {
             }
             return 0;
         });
+    }
+
+    /* istanbul ignore next */
+    equals(x) {
+        return ObjectHelper.equals(this, x);
     }
 
     /* istanbul ignore next */
