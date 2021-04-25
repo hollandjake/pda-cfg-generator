@@ -1,14 +1,11 @@
+import Comparison from "./Comparison.js";
+
 export default class Feedback {
 
-    constructor(targetCFG, studentCFG) {
-        this._targetCFG = targetCFG;
+    constructor(targetPDA, studentCFG) {
         this._studentCFG = studentCFG;
-        this._notes = ["First note", "Second note"];
-
-    }
-
-    get targetCFG() {
-        return this._targetCFG;
+        this._comparison = Comparison.between(targetPDA, studentCFG);
+        this._notes = this._comparison.generateNotes();
     }
 
     get studentCFG() {
@@ -19,7 +16,7 @@ export default class Feedback {
         return this._notes;
     }
 
-    static for(targetCFG, studentCFG) {
-        return new Feedback(targetCFG, studentCFG);
+    static for(targetPDA, studentCFG) {
+        return new Feedback(targetPDA, studentCFG);
     }
 }

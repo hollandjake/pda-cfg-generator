@@ -1,6 +1,5 @@
 import Renderer from "../helper/Renderer.js";
 import PDAGenerator from "../generator/PDAGenerator.js";
-import CFGRemapper from "../cfg/CFGRemapper.js";
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -23,7 +22,7 @@ export default class UIController {
     }
 
     /**
-     * @return {(PDA|CFG)[]}
+     * @return {PDA}
      */
     generateNewPDA(difficulty) {
         this._difficultyDisplay.innerText = this.difficulty;
@@ -35,13 +34,11 @@ export default class UIController {
         }
 
         let pda = PDAGenerator.generatePDA(difficulty);
-        sleep(2000).then(r => {
-            this._questionContainer.classList.remove('disable');
-            this._pdaRenderer.render(pda);
-            sleep(100).then(r => this._questionContainer.classList.add('active')); // Give it some time to load image
-        });
+        this._questionContainer.classList.remove('disable');
+        this._pdaRenderer.render(pda);
+        sleep(100).then(() => this._questionContainer.classList.add('active')); // Give it some time to load image
 
-        return [pda, CFGRemapper.remap(pda.toCFG())];
+        return pda;
     }
 
     showFeedback(feedback) {

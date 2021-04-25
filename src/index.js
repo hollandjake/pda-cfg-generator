@@ -6,7 +6,7 @@ import CFG from "./internal/cfg/CFG.js";
 document.addEventListener('DOMContentLoaded', () => {
     let uiController = new UIController();
 
-    let [targetPDA, targetCFG] = uiController.generateNewPDA(uiController.difficulty);
+    let targetPDA = uiController.generateNewPDA(uiController.difficulty);
     let userInputField = document.getElementById("cfg-input");
 
     document.getElementById("submit").addEventListener('click', (e) => {
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation();
         e.stopImmediatePropagation();
 
-        let feedback = Feedback.for(targetCFG, CFG.fromString(userInputField.innerText));
+        let feedback = Feedback.for(targetPDA, CFG.fromString(userInputField.innerText));
         uiController.showFeedback(feedback);
     })
 

@@ -53,13 +53,7 @@
                 </div>
                 <div class="card mt-5" id="answer-box">
                     <div class="card-body">
-                        <h5 class="card-title">Correct Answer</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <ul id="correct_answer"></ul>
-                            </div>
-                        </div>
-                        <h5 class="card-title mt-2">Feedback</h5>
+                        <h5 class="card-title">Feedback</h5>
                         <div class="card">
                             <div class="card-body">
                                 <ul id="feedback"></ul>

@@ -2,8 +2,9 @@ import ArrayHelper from "../helper/ArrayHelper.js";
 import State from "./State.js";
 import Symbol from "../Symbol.js";
 import Transition from "./Transition.js";
-import PDAConvert from "./PDAConvert.js";
-import CFGSimplify from "../cfg/CFGSimplify.js";
+import ObjectHelper from "../helper/ObjectHelper.js";
+import StackSymbol from "./StackSymbol.js";
+import InputSymbol from "./InputSymbol.js";
 
 export default class PDA {
     /**
@@ -29,7 +30,6 @@ export default class PDA {
         this._transitions = Transition.sort(ArrayHelper.distinct(transitions));
         this._startState = startState;
         this._acceptStates = Symbol.sort(ArrayHelper.distinct(acceptStates));
-        this._generatedStates = [];
     }
 
     /* istanbul ignore next */
@@ -90,17 +90,34 @@ export default class PDA {
         let stackAlphabet = [];
         let acceptStates = [];
 
-        ArrayHelper.distinct(transitions).forEach(transition => {
+        transitions = ArrayHelper.distinct(transitions);
+
+        transitions.forEach(transition => {
             if (!(transition instanceof Transition)) {
                 throw new Error("transition is not of type 'Transition'");
             }
-            states.push(transition.fromState, transition.toState);
-            inputAlphabet.push(transition.input);
-            stackAlphabet.push(transition.stackHead, transition.stackPush);
             if (transition.toState.isAcceptState) {
                 acceptStates.push(transition.toState);
             }
         });
+
+        transitions = transitions.map(transition => {
+            let fromState = transition.fromState;
+            let toState = transition.toState;
+            acceptStates.forEach(acceptState => {
+                if (acceptState.id === fromState.id) {
+                    fromState = acceptState;
+                }
+
+                if (acceptState.id === toState.id) {
+                    toState = acceptState;
+                }
+            })
+            states.push(fromState, toState);
+            inputAlphabet.push(transition.input);
+            stackAlphabet.push(transition.stackHead, transition.stackPush);
+            return new Transition(fromState, toState, transition.input, transition.stackHead, transition.stackPush);
+        })
 
         if (!ArrayHelper.contains(states, startState)) {
             throw new Error("Start start not found in transition states");
@@ -109,29 +126,47 @@ export default class PDA {
         return new PDA(states, inputAlphabet, stackAlphabet, transitions, startState, acceptStates);
     }
 
-    /* istanbul ignore next */
     /**
-     * @return {CFG}
+     *
+     * @param {InputSymbol[]} inputSequence
+     * @param {State} state
+     * @param {StackSymbol[]} stack
      */
-    toCFG() {
-        return CFGSimplify.simplify(PDAConvert.toCFG(this));
-    }
+    accepts(inputSequence, state = this._startState, stack = []) {
+        inputSequence = inputSequence.filter(i => !InputSymbol.EPSILON.equals(i));
+        if (inputSequence.length === 0 && state.isAcceptState) {
+            return true;
+        }
 
-    isEasy() {
-        return this.startState.equals(State.start) &&
-            this.acceptStates.length === 1 &&
-            this.acceptStates[0].equals(State.accept) &&
-            this.transitions.every(t => t.isEasy());
-    }
+        let input = inputSequence.shift();
+        let stackHead = stack.pop();
 
-    /**
-     * @returns {State}
-     */
-    generateNewState() {
-        let newState = State.p(-1 * (this._generatedStates.length + 1));
-        this._generatedStates.push(newState);
+        return this._transitions
+            .filter(t => ObjectHelper.equals(state, t.fromState)) //Get all transitions coming from the state
+            .filter(t => InputSymbol.EPSILON.equals(t.input) || ObjectHelper.equals(input, t.input))
+            .filter(t => StackSymbol.EPSILON.equals(t.stackHead) || ObjectHelper.equals(stackHead, t.stackHead))
+            .some(t => {
+                let newStack = [...stack];
+                let newInputSequence = [...inputSequence];
 
-        return newState;
+                if (InputSymbol.EPSILON.equals(t.input)) {
+                    if (input && !InputSymbol.EPSILON.equals(input)) {
+                        newInputSequence.unshift(input);
+                    }
+                }
+
+                if (StackSymbol.EPSILON.equals(t.stackHead)) {
+                    if (stackHead) {
+                        newStack.push(stackHead);
+                    }
+                }
+
+                if (!StackSymbol.EPSILON.equals(t.stackPush)) {
+                    newStack.push(t.stackPush);
+                }
+
+                return this.accepts(newInputSequence, t.toState, newStack);
+            })
     }
 
     /* istanbul ignore next */

@@ -134,10 +134,6 @@ export default class Transition {
         return `(${this.toState}, ${this.stackPush}) ∈ δ(${this.fromState}, ${this.input}, ${this.stackHead})`;
     }
 
-    isEasy() {
-        return StackSymbol.EPSILON.equals(this.stackPush) ^ StackSymbol.EPSILON.equals(this.stackHead);
-    }
-
     withoutAccept() {
         return new Transition(this.fromState.withoutAccept(), this.toState.withoutAccept(), this.input, this.stackHead, this.stackPush);
     }
