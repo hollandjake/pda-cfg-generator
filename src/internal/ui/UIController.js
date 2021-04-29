@@ -1,6 +1,5 @@
 import Renderer from "../helper/Renderer.js";
 import PDAGenerator from "../generator/PDAGenerator.js";
-import CFGRemapper from "../cfg/CFGRemapper.js";
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -25,7 +24,7 @@ export default class UIController {
     /**
      * @return {(PDA|CFG)[]}
      */
-    generateNewPDA(difficulty) {
+    generatePDA(difficulty) {
         this._difficultyDisplay.innerText = this.difficulty;
 
         if (this._questionContainer.classList.contains('active')) {
@@ -35,13 +34,12 @@ export default class UIController {
         }
 
         let pda = PDAGenerator.generatePDA(difficulty);
-        sleep(2000).then(r => {
-            this._questionContainer.classList.remove('disable');
-            this._pdaRenderer.render(pda);
-            sleep(100).then(r => this._questionContainer.classList.add('active')); // Give it some time to load image
-        });
 
-        return [pda, CFGRemapper.remap(pda.toCFG())];
+        this._questionContainer.classList.remove('disable');
+        this._pdaRenderer.render(pda);
+        sleep(100).then(() => this._questionContainer.classList.add('active')); // Give it some time to load image
+
+        return [pda, pda.toCFG().remap()];
     }
 
     showFeedback(feedback) {
@@ -63,9 +61,13 @@ export default class UIController {
             this.appendChild(this._correctAnswerBox, v)
         })
 
-        feedback.notes.forEach(note => {
-            this.appendChild(this._feedbackBox, note);
-        })
+        if (feedback.notes.length === 0) {
+            this.appendChild(this._feedbackBox, "Congratulations you got it correct!");
+        } else {
+            feedback.notes.forEach(note => {
+                this.appendChild(this._feedbackBox, note);
+            })
+        }
 
         let panel = this._answerBox;
         panel.style.maxHeight = panel.scrollHeight + "px";

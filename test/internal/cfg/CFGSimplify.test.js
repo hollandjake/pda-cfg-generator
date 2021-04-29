@@ -99,11 +99,3 @@ test('simplify with recursion', () => {
         Rule.fromString('A->e')
     ]))
 })
-
-
-// test('test', () => {
-//     let pda = PDAGenerator.generatePDA(5);
-//     let cfg = pda.toCFG();
-//
-//     expect(cfg).toEqual(CFG.fromRules([]))
-// })

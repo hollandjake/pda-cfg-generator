@@ -51,7 +51,7 @@ test('Throws Error When Creating a CFG from rules and startVariable isnt in rule
 test('Throws Error When Creating a CFG from rules and outputList contains a non Terminal or Variable', () => {
     expect(() => {
         CFG.fromRules([
-            new Rule(Variable.S,[Symbol.of("a")])
+            new Rule(Variable.S, [Symbol.of("a")])
         ])
     }).toThrowError();
 })
@@ -89,5 +89,55 @@ test('generateVariableStrings', () => {
         [
             'A -> a'
         ]
+    ])
+})
+
+test('simplify', () => {
+    let cfg = CFG.fromRules([
+        Rule.fromString("S->A"),
+        Rule.fromString("S->aBA"),
+        Rule.fromString("A->A"),
+        Rule.fromString("A->B"),
+        Rule.fromString("A->a"),
+        Rule.fromString("B->b"),
+        Rule.fromString("C->c")
+    ])
+
+    let actual1 = cfg.simplify();
+    expect(actual1).toEqual(CFG.fromRules([
+        Rule.fromString("S->a"),
+        Rule.fromString("S->b"),
+        Rule.fromString("S->aba"),
+        Rule.fromString("S->abb"),
+    ]))
+})
+
+test('normalise', () => {
+    let cfg = CFG.fromString("S->ASA,S->aB,A->B,A->S,B->b,B->e");
+
+    expect(cfg.normalise()).toEqual(CFG.fromString("" +
+        "S->AB,S->CB," +
+        "A->B,A->S," +
+        "B->b,B->e,B->SA," +
+        "C->a"
+    ));
+})
+
+test('remap', () => {
+    let cfg = CFG.fromString("S->XSX,S->aT,X->T,X->S,T->b,T->e");
+
+    expect(cfg.remap()).toEqual(CFG.fromString("S->BSB,S->aA,B->A,B->S,A->b,A->e"))
+})
+
+test('getAcceptingInputs', () => {
+    let cfg = CFG.fromString("S->ASA,S->aB,A->B,A->S,B->b,B->e");
+
+    let acceptingInputs = cfg.getAcceptingInputs(3);
+    expect(acceptingInputs).toEqual([
+        [Terminal.of("b"), Terminal.of("b")],
+        [Terminal.of("b")],
+        [Terminal.EPSILON],
+        [Terminal.of("a"), Terminal.of("b")],
+        [Terminal.of("a")]
     ])
 })
