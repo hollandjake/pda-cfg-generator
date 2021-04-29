@@ -92,3 +92,9 @@ test('terminates', () => {
     expect(Rule.fromString('S->A').terminates()).toBeFalsy();
     expect(Rule.fromString('S->A').terminates([Variable.of('A')])).toBeTruthy();
 })
+
+test('isMixedOutput', () => {
+    expect(Rule.fromString('S->aaA').isMixedOutput()).toBeTruthy();
+    expect(Rule.fromString('S->AAa').isMixedOutput()).toBeTruthy();
+    expect(Rule.fromString('S->a').isMixedOutput()).toBeFalsy();
+})

@@ -3,6 +3,10 @@ import ArrayHelper from "../helper/ArrayHelper.js";
 import Variable from "./Variable.js";
 import Rule from "./Rule.js";
 import Terminal from "./Terminal.js";
+import CFGNormalise from "./CFGNormalise.js";
+import CFGSimplify from "./CFGSimplify.js";
+import CFT from "../cft/CFT.js";
+import CFGRemapper from "./CFGRemapper.js";
 
 export default class CFG {
     /**
@@ -20,6 +24,27 @@ export default class CFG {
 
         this._rules = Rule.sort(ArrayHelper.distinct(rules));
         this._startVariable = startVariable;
+        this._ghost_variables = [];
+    }
+
+    remap() {
+        return CFGRemapper.remap(this);
+    }
+
+    normalise() {
+        return CFGNormalise.normalise(this);
+    }
+
+    simplify() {
+        return CFGSimplify.simplify(this);
+    }
+
+    /**
+     * @param maxLength
+     * @returns {[[Terminal]]}
+     */
+    getAcceptingInputs(maxLength = 50) {
+        return CFT.fromCFG(this.normalise(), maxLength).filter(sequence => sequence.length <= maxLength);
     }
 
     get variables() {
@@ -36,6 +61,21 @@ export default class CFG {
 
     get startVariable() {
         return this._startVariable;
+    }
+
+    nextVariable() {
+        let usedVariables = Symbol.sort(this.variables.concat(this._ghost_variables)).reverse().filter(s => !Variable.S.equals(s) && !Variable.S0.equals(s));
+        if (usedVariables.length === 0) {
+            usedVariables = [new Variable(String.fromCharCode(64))];
+        }
+        let lastVariable = usedVariables[0].id;
+        let nextCharCode = lastVariable.charCodeAt(0) + 1;
+        if (nextCharCode === 83) {
+            nextCharCode = 84
+        }
+        let nextVariable = new Variable(String.fromCharCode(nextCharCode));
+        this._ghost_variables.push(nextVariable);
+        return nextVariable;
     }
 
     /**
