@@ -1,10 +1,15 @@
 export default class Feedback {
+    _targetCFG;
+    _studentCFG;
+    _notes;
 
     constructor(targetCFG, studentCFG) {
         this._targetCFG = targetCFG;
         this._studentCFG = studentCFG;
-        this._notes = this.generateNotes();
+        [this._score, this._notes] = this.generateNotes();
     }
+
+    _score;
 
     get targetCFG() {
         return this._targetCFG;
@@ -18,18 +23,25 @@ export default class Feedback {
         return this._notes;
     }
 
+    get score() {
+        return this._score;
+    }
+
     static for(targetCFG, studentCFG) {
         return new Feedback(targetCFG, studentCFG);
     }
 
     generateNotes() {
-        let targetAccepts = this._targetCFG.getAcceptingInputs().map(s => s.join("")).sort().reverse();
-        let studentAccepts = this._studentCFG ? this._studentCFG.getAcceptingInputs().map(s => s.join("")).sort().reverse() : [];
+        let targetAccepts = this._targetCFG.getAcceptingInputs().map(s => s.join("")).sort().sort((a, b) => a.length - b.length);
+        let studentAccepts = this._studentCFG ? this._studentCFG.getAcceptingInputs().map(s => s.join("")).sort().sort((a, b) => a.length - b.length) : [];
 
         let missingAccepts = targetAccepts.filter(x => !studentAccepts.includes(x));
         let extraAccepts = studentAccepts.filter(x => !targetAccepts.includes(x));
 
-        return missingAccepts.map(missing => `Your query doesn't accept "${missing}", but the answer does`)
-            .concat(extraAccepts.map(extra => `Your query accepts "${extra}", when the answer doesn't`));
+        let score = Math.round((1 - (missingAccepts.length + extraAccepts.length) / (studentAccepts.length + targetAccepts.length)) * 100);
+
+        return [score, missingAccepts.map(missing => `Your query doesn't accept "${missing}", but the answer does`)
+            .concat(["\n"])
+            .concat(extraAccepts.map(extra => `Your query accepts "${extra}", when the answer doesn't`))];
     }
 }

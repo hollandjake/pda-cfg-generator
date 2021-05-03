@@ -64,6 +64,7 @@ export default class UIController {
         if (feedback.notes.length === 0) {
             this.appendChild(this._feedbackBox, "Congratulations you got it correct!");
         } else {
+            this.appendChild(this._feedbackBox, `Score: ${feedback.score}%\n`)
             feedback.notes.forEach(note => {
                 this.appendChild(this._feedbackBox, note);
             })
