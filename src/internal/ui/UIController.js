@@ -12,6 +12,7 @@ export default class UIController {
         this._pdaRenderer = new Renderer(this._pdaContainer);
         this._answerBox = document.getElementById("answer-box");
         this._feedbackBox = document.getElementById("feedback");
+        this._scoreBox = document.getElementById("score");
         this._correctAnswerBox = document.getElementById("correct_answer");
         this._difficultyDisplay = document.getElementById("current_difficulty");
         this._difficulty = 1;
@@ -43,12 +44,12 @@ export default class UIController {
     }
 
     showFeedback(feedback) {
+        this._scoreBox.innerHTML = "";
         this._correctAnswerBox.innerHTML = "";
         this._feedbackBox.innerHTML = "";
 
         let startVariable = feedback.targetCFG.startVariable;
         this.appendChild(this._correctAnswerBox, startVariable, 'Start Symbol: ');
-        this._correctAnswerBox.appendChild(document.createElement('br'));
 
         let [startVariableString, otherVariableStrings] = feedback.targetCFG.generateVariableStrings();
 
@@ -61,10 +62,11 @@ export default class UIController {
             this.appendChild(this._correctAnswerBox, v)
         })
 
+        this.appendChild(this._scoreBox, `Score: ${feedback.score}%\n`)
+
         if (feedback.notes.length === 0) {
             this.appendChild(this._feedbackBox, "Congratulations you got it correct!");
         } else {
-            this.appendChild(this._feedbackBox, `Score: ${feedback.score}%\n`)
             feedback.notes.forEach(note => {
                 this.appendChild(this._feedbackBox, note);
             })

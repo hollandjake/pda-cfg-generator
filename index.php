@@ -1,4 +1,5 @@
-<?php $title = 'Tool'; include $_SERVER["DOCUMENT_ROOT"] . "/components/header.php" ?>
+<?php $title = 'Tool';
+include $_SERVER["DOCUMENT_ROOT"] . "/components/header.php" ?>
     <script src="src/external/viz.min.js"></script>
     <script type="module" src="src/index.js"></script>
     <div class="container background">
@@ -34,9 +35,9 @@
                         <div id="pda" class="card-text mt-5 mb-5"></div>
                         <form id="cfg-input-form">
                             <div class="form-group">
-                    <textarea class="form-control" id="cfg-input"
-                              aria-label="input your context-free grammar here" rows="5"
-                              placeholder="e.g. S -> aBc"></textarea>
+                            <textarea class="form-control" id="cfg-input"
+                                      aria-label="input your context-free grammar here" rows="5"
+                                      placeholder="e.g. S -> aBc"></textarea>
                                 <ul id="cfg-input-help" class="form-text text-muted">
                                     <li><small>Variables are represented with UPPERCASE characters</small></li>
                                     <li><small>Terminals are represented with lowercase characters</small></li>
@@ -53,16 +54,21 @@
                 </div>
                 <div class="card mt-5" id="answer-box">
                     <div class="card-body">
-                        <h5 class="card-title">Correct Answer</h5>
+                        <h5 class="card-title">Feedback</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <ul id="score"></ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div id="feedbackContainer" class="card-body">
+                                <ul id="feedback"></ul>
+                            </div>
+                        </div>
+                        <h5 class="card-title mt-2">Approximate answer</h5>
                         <div class="card">
                             <div class="card-body">
                                 <ul id="correct_answer"></ul>
-                            </div>
-                        </div>
-                        <h5 class="card-title mt-2">Feedback</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <ul id="feedback"></ul>
                             </div>
                         </div>
                     </div>

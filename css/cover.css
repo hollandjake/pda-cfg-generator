@@ -55,13 +55,23 @@
     font-size: 3.5rem;
   }
 }
+
 .card * {
   max-width: 100%;
 }
 
-#feedback, #correct_answer {
+#feedback, #score, #correct_answer {
   list-style: none;
   padding-left: 0;
+}
+
+#answer-box .card {
+  margin-bottom: 1em;
+}
+
+#feedbackContainer {
+  max-height: 20em;
+  overflow-y: auto;
 }
 
 .background {
