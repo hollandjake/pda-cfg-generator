@@ -13,9 +13,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-
-        let feedback = Feedback.for(targetCFG, CFG.fromString(userInputField.value));
-        uiController.showFeedback(feedback);
+        try {
+            let feedback = Feedback.for(targetCFG, CFG.fromString(userInputField.value));
+            uiController.showFeedback(feedback);
+        } catch (e) {
+            uiController.showError(e);
+        }
     })
 
     document.getElementById("new_question_button_easier").addEventListener('click', (e) => {

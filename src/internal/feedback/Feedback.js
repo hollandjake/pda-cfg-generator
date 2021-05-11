@@ -2,14 +2,13 @@ export default class Feedback {
     _targetCFG;
     _studentCFG;
     _notes;
+    _score;
 
     constructor(targetCFG, studentCFG) {
         this._targetCFG = targetCFG;
         this._studentCFG = studentCFG;
         [this._score, this._notes] = this.generateNotes();
     }
-
-    _score;
 
     get targetCFG() {
         return this._targetCFG;
@@ -40,8 +39,14 @@ export default class Feedback {
 
         let score = Math.round((1 - (missingAccepts.length + extraAccepts.length) / (studentAccepts.length + targetAccepts.length)) * 100);
 
-        return [score, missingAccepts.map(missing => `Your query doesn't accept "${missing}", but the answer does`)
+        let notes = [score, missingAccepts.map(missing => `Your query doesn't accept "${missing}", but the answer does`)
             .concat(["\n"])
             .concat(extraAccepts.map(extra => `Your query accepts "${extra}", when the answer doesn't`))];
+
+        if (notes[1].length === 1) {
+            return [notes[0], []];
+        } else {
+            return notes;
+        }
     }
 }

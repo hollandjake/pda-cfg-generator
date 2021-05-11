@@ -15,6 +15,7 @@ export default class UIController {
         this._scoreBox = document.getElementById("score");
         this._correctAnswerBox = document.getElementById("correct_answer");
         this._difficultyDisplay = document.getElementById("current_difficulty");
+        this._answerTitle = document.getElementById("answer-title");
         this._difficulty = 1;
     }
 
@@ -47,6 +48,10 @@ export default class UIController {
         this._scoreBox.innerHTML = "";
         this._correctAnswerBox.innerHTML = "";
         this._feedbackBox.innerHTML = "";
+        this._feedbackBox.parentElement.parentElement.classList.remove("d-none");
+        this._scoreBox.parentElement.parentElement.classList.remove("d-none");
+        this._correctAnswerBox.parentElement.parentElement.classList.remove("d-none");
+        this._answerTitle.classList.remove("d-none");
 
         let startVariable = feedback.targetCFG.startVariable;
         this.appendChild(this._correctAnswerBox, startVariable, 'Start Symbol: ');
@@ -71,6 +76,18 @@ export default class UIController {
                 this.appendChild(this._feedbackBox, note);
             })
         }
+
+        let panel = this._answerBox;
+        panel.style.maxHeight = panel.scrollHeight + "px";
+        panel.style.border = "none";
+    }
+
+    showError(e) {
+        this._feedbackBox.innerHTML = "<strong>Your input is not a valid context-free grammar</strong><br><br>Check out the formatting rules above.";
+        this._feedbackBox.parentElement.parentElement.classList.remove("d-none");
+        this._scoreBox.parentElement.parentElement.classList.add("d-none");
+        this._correctAnswerBox.parentElement.parentElement.classList.add("d-none");
+        this._answerTitle.classList.add("d-none");
 
         let panel = this._answerBox;
         panel.style.maxHeight = panel.scrollHeight + "px";

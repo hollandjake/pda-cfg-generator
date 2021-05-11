@@ -65,7 +65,7 @@ include $_SERVER["DOCUMENT_ROOT"] . "/components/header.php" ?>
                                 <ul id="feedback"></ul>
                             </div>
                         </div>
-                        <h5 class="card-title mt-2">Approximate answer</h5>
+                        <h5 id="answer-title" class="card-title mt-2">Approximate answer</h5>
                         <div class="card">
                             <div class="card-body">
                                 <ul id="correct_answer"></ul>

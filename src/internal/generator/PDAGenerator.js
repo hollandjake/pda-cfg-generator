@@ -13,63 +13,79 @@ export default class PDAGenerator {
      * @return {PDA}
      */
     static generatePDA(difficulty) {
-        return PDA.fromTransitions([
-            new Transition(
-                State.p0,
-                State.p(1),
-                InputSymbol.EPSILON,
-                StackSymbol.EPSILON,
-                StackSymbol.EMPTY_STACK
-            ),
-            new Transition(
-                State.p(1),
-                State.p(2),
-                InputSymbol.of("a"),
-                StackSymbol.EPSILON,
-                StackSymbol.of("B")
-            ),
-            new Transition(
-                State.p(2),
-                State.p(2),
-                InputSymbol.of("a"),
-                StackSymbol.EPSILON,
-                StackSymbol.of("B")
-            ),
-            new Transition(
-                State.p(2),
-                State.p(3),
-                InputSymbol.EPSILON,
-                StackSymbol.of("B"),
-                StackSymbol.EPSILON
-            ),
-            new Transition(
-                State.p(3),
-                State.p(2),
-                InputSymbol.EPSILON,
-                StackSymbol.of("B"),
-                StackSymbol.of("A")
-            ),
-            new Transition(
-                State.p(2),
-                State.p(4),
-                InputSymbol.of("b"),
-                StackSymbol.of("A"),
-                StackSymbol.EPSILON
-            ),
-            new Transition(
-                State.p(4),
-                State.p(4),
-                InputSymbol.of("b"),
-                StackSymbol.of("A"),
-                StackSymbol.EPSILON
-            ),
-            new Transition(
-                State.p(4),
-                State.p(difficulty, true),
-                InputSymbol.EPSILON,
-                StackSymbol.EMPTY_STACK,
-                StackSymbol.EPSILON
-            )
-        ]);
+        switch (difficulty) {
+            case 1:
+                return PDA.fromTransitions([
+                    new Transition(State.p0, State.p(1), InputSymbol.of('a'), StackSymbol.EPSILON, StackSymbol.of('a')),
+                    new Transition(State.p(1), State.accept, InputSymbol.EPSILON, StackSymbol.of('a'), StackSymbol.EPSILON),
+                ])
+            case 2:
+                return PDA.fromTransitions([
+                    new Transition(State.p0, State.p(1), InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.EMPTY_STACK),
+                    new Transition(State.p(1), State.p(1), InputSymbol.of('a'), StackSymbol.EPSILON, StackSymbol.of('A')),
+                    new Transition(State.p(1), State.p(2), InputSymbol.EPSILON, StackSymbol.EPSILON, StackSymbol.EPSILON),
+                    new Transition(State.p(2), State.p(2), InputSymbol.of('b'), StackSymbol.of('A'), StackSymbol.EPSILON),
+                    new Transition(State.p(2), State.p(3, true), InputSymbol.EPSILON, StackSymbol.EMPTY_STACK, StackSymbol.EPSILON),
+                ])
+            default:
+                return PDA.fromTransitions([
+                    new Transition(
+                        State.p0,
+                        State.p(1),
+                        InputSymbol.EPSILON,
+                        StackSymbol.EPSILON,
+                        StackSymbol.EMPTY_STACK
+                    ),
+                    new Transition(
+                        State.p(1),
+                        State.p(2),
+                        InputSymbol.of("a"),
+                        StackSymbol.EPSILON,
+                        StackSymbol.of("B")
+                    ),
+                    new Transition(
+                        State.p(2),
+                        State.p(2),
+                        InputSymbol.of("a"),
+                        StackSymbol.EPSILON,
+                        StackSymbol.of("B")
+                    ),
+                    new Transition(
+                        State.p(2),
+                        State.p(3),
+                        InputSymbol.EPSILON,
+                        StackSymbol.of("B"),
+                        StackSymbol.EPSILON
+                    ),
+                    new Transition(
+                        State.p(3),
+                        State.p(2),
+                        InputSymbol.EPSILON,
+                        StackSymbol.of("B"),
+                        StackSymbol.of("A")
+                    ),
+                    new Transition(
+                        State.p(2),
+                        State.p(4),
+                        InputSymbol.of("b"),
+                        StackSymbol.of("A"),
+                        StackSymbol.EPSILON
+                    ),
+                    new Transition(
+                        State.p(4),
+                        State.p(4),
+                        InputSymbol.of("b"),
+                        StackSymbol.of("A"),
+                        StackSymbol.EPSILON
+                    ),
+                    new Transition(
+                        State.p(4),
+                        State.p(difficulty, true),
+                        InputSymbol.EPSILON,
+                        StackSymbol.EMPTY_STACK,
+                        StackSymbol.EPSILON
+                    )
+                ]);
+        }
     }
 }

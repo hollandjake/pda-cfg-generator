@@ -65,6 +65,11 @@
   }
 }
 
+#pda {
+  display: flex;
+  justify-content: center;
+}
+
 .card * {
   max-width: 100%;
 }
