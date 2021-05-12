@@ -16,6 +16,7 @@ export default class UIController {
         this._correctAnswerBox = document.getElementById("correct_answer");
         this._difficultyDisplay = document.getElementById("current_difficulty");
         this._answerTitle = document.getElementById("answer-title");
+        this._inputBox = document.getElementById("cfg-input");
         this._difficulty = 1;
     }
 
@@ -39,6 +40,10 @@ export default class UIController {
 
         this._questionContainer.classList.remove('disable');
         this._pdaRenderer.render(pda);
+        this._scoreBox.innerHTML = "";
+        this._correctAnswerBox.innerHTML = "";
+        this._feedbackBox.innerHTML = "";
+        this._inputBox.value = "";
         sleep(100).then(() => this._questionContainer.classList.add('active')); // Give it some time to load image
 
         return [pda, pda.toCFG().remap()];
