@@ -31,8 +31,8 @@ export default class Feedback {
     }
 
     generateNotes() {
-        let targetAccepts = this._targetCFG.getAcceptingInputs().map(s => s.join("")).sort().sort((a, b) => a.length - b.length);
-        let studentAccepts = this._studentCFG ? this._studentCFG.getAcceptingInputs().map(s => s.join("")).sort().sort((a, b) => a.length - b.length) : [];
+        let targetAccepts = this._targetCFG.getAcceptingInputs(50).map(s => s.join("")).sort().sort((a, b) => a.length - b.length);
+        let studentAccepts = this._studentCFG.getAcceptingInputs(50).map(s => s.join("")).sort().sort((a, b) => a.length - b.length);
 
         let missingAccepts = targetAccepts.filter(x => !studentAccepts.includes(x));
         let extraAccepts = studentAccepts.filter(x => !targetAccepts.includes(x));

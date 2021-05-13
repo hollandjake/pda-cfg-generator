@@ -132,12 +132,24 @@ test('remap', () => {
 test('getAcceptingInputs', () => {
     let cfg = CFG.fromString("S->ASA,S->aB,A->B,A->S,B->b,B->e");
 
-    let acceptingInputs = cfg.getAcceptingInputs(3);
+    let acceptingInputs = cfg.getAcceptingInputs(2);
     expect(acceptingInputs).toEqual([
         [Terminal.of("b"), Terminal.of("b")],
         [Terminal.of("b")],
-        [Terminal.EPSILON],
         [Terminal.of("a"), Terminal.of("b")],
-        [Terminal.of("a")]
+        [Terminal.EPSILON],
+        [Terminal.of("a")],
+        [Terminal.of("b"), Terminal.of("a")],
+        [Terminal.of("a"), Terminal.of("a")],
     ])
+})
+
+test('nextVariable start at A', () => {
+    let cfg = CFG.fromString('S->a');
+    expect(cfg.nextVariable()).toEqual(Variable.of('A'));
+})
+
+test('nextVariable skips S', () => {
+    let cfg = CFG.fromRules([Rule.fromString('R->a')], Variable.of('R'));
+    expect(cfg.nextVariable()).toEqual(Variable.of('T'));
 })

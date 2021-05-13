@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             let feedback = Feedback.for(targetCFG, CFG.fromString(userInputField.value));
             uiController.showFeedback(feedback);
-        } catch (e) {
-            uiController.showError(e);
+        } catch (ex) {
+            uiController.showError(ex);
         }
     })
 

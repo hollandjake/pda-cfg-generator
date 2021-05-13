@@ -42,10 +42,9 @@ include $_SERVER["DOCUMENT_ROOT"] . "/components/header.php" ?>
                                     <li><small>Variables are represented with UPPERCASE characters</small></li>
                                     <li><small>Terminals are represented with lowercase characters</small></li>
                                     <li><small>To input an '&epsilon;' use 'e'</small></li>
-                                    <li><small>Production rules must follow the format 'Variable -&gt; Sequence of
-                                            terminals
-                                            and Variables'</small></li>
-                                    <li><small>e.g. 'S -&gt; aBc' (spaces are optional)</small></li>
+                                    <li><small>Production rules must follow the format 'Variable -&gt; Sequence of Symbols'</small></li>
+                                    <li><small>You may use the pipe character "|" to group rules with the same input variable'</small></li>
+                                    <li><small>e.g. 'S -&gt; aBc | D' (spaces are optional)</small></li>
                                 </ul>
                             </div>
                             <button class="btn btn-primary" type="submit" id="submit">Submit</button>

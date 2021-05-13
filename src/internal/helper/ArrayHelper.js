@@ -152,4 +152,11 @@ export default class ArrayHelper {
         }
         return true;
     }
+
+    static fast_distinct(array) {
+        let map = new Map();
+
+        array.forEach(e => map.set(e.toString(), e));
+        return Array.from(map.values());
+    }
 }

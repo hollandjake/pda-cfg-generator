@@ -46,7 +46,7 @@ export default class UIController {
         this._inputBox.value = "";
         sleep(100).then(() => this._questionContainer.classList.add('active')); // Give it some time to load image
 
-        return [pda, pda.toCFG().remap()];
+        return [pda, pda.toCFG().normalise().remap()];
     }
 
     showFeedback(feedback) {
@@ -60,6 +60,7 @@ export default class UIController {
 
         let startVariable = feedback.targetCFG.startVariable;
         this.appendChild(this._correctAnswerBox, startVariable, 'Start Symbol: ');
+        this._correctAnswerBox.append(document.createElement("br"));
 
         let [startVariableString, otherVariableStrings] = feedback.targetCFG.generateVariableStrings();
 

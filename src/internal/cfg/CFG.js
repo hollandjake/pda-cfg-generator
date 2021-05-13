@@ -27,26 +27,6 @@ export default class CFG {
         this._ghost_variables = [];
     }
 
-    remap() {
-        return CFGRemapper.remap(this);
-    }
-
-    normalise() {
-        return CFGNormalise.normalise(this);
-    }
-
-    simplify() {
-        return CFGSimplify.simplify(this);
-    }
-
-    /**
-     * @param maxLength
-     * @returns {[[Terminal]]}
-     */
-    getAcceptingInputs(maxLength = 50) {
-        return CFT.fromCFG(this.normalise(), maxLength + 10).filter(sequence => sequence.length <= maxLength);
-    }
-
     get variables() {
         return this._variables;
     }
@@ -61,21 +41,6 @@ export default class CFG {
 
     get startVariable() {
         return this._startVariable;
-    }
-
-    nextVariable() {
-        let usedVariables = Symbol.sort(this.variables.concat(this._ghost_variables)).reverse().filter(s => !Variable.S.equals(s) && !Variable.S0.equals(s));
-        if (usedVariables.length === 0) {
-            usedVariables = [new Variable(String.fromCharCode(64))];
-        }
-        let lastVariable = usedVariables[0].id;
-        let nextCharCode = lastVariable.charCodeAt(0) + 1;
-        if (nextCharCode === 83) {
-            nextCharCode = 84
-        }
-        let nextVariable = new Variable(String.fromCharCode(nextCharCode));
-        this._ghost_variables.push(nextVariable);
-        return nextVariable;
     }
 
     /**
@@ -121,16 +86,57 @@ export default class CFG {
         if (inputString !== null && inputString.length > 0) {
             let ruleStrings = inputString.split(/[,\n]/);
 
-            let rules = ruleStrings.map(rule => Rule.fromString(rule)).filter(rule => rule !== null);
+            let rules = ruleStrings.map(rule => Rule.fromStrings(rule)).flat().filter(rule => rule !== null);
 
             if (rules.length > 0) {
-                let startVariable = rules[0].inputVariable;
+                let startVariable;
+
+                if (rules.some(r => r.inputVariable.equals(Variable.S))) {
+                    startVariable = Variable.S;
+                } else {
+                    startVariable = rules[0].inputVariable;
+                }
 
                 return CFG.fromRules(rules, startVariable);
             }
         }
 
         return null;
+    }
+
+    remap() {
+        return CFGRemapper.remap(this);
+    }
+
+    normalise() {
+        return CFGNormalise.normalise(this);
+    }
+
+    simplify() {
+        return CFGSimplify.simplify(this);
+    }
+
+    /**
+     * @param maxLength
+     * @returns {[[Terminal]]}
+     */
+    getAcceptingInputs(maxLength) {
+        return CFT.fromCFG(this.normalise(), maxLength).filter(sequence => sequence.length <= maxLength);
+    }
+
+    nextVariable() {
+        let usedVariables = Symbol.sort(this.variables.concat(this._ghost_variables)).reverse().filter(s => !Variable.S.equals(s) && !Variable.S0.equals(s));
+        if (usedVariables.length === 0) {
+            usedVariables = [new Variable(String.fromCharCode(64))];
+        }
+        let lastVariable = usedVariables[0].id;
+        let nextCharCode = lastVariable.charCodeAt(0) + 1;
+        if (nextCharCode === 83) {
+            nextCharCode = 84
+        }
+        let nextVariable = new Variable(String.fromCharCode(nextCharCode));
+        this._ghost_variables.push(nextVariable);
+        return nextVariable;
     }
 
     generateVariableStrings() {

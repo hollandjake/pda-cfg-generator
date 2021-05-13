@@ -35,6 +35,28 @@ export default class Rule {
     /**
      * Parse a {Rule} from a string using the format <Variable> -> <Variable|Terminal>*
      * @param {String} ruleString
+     * @returns {Rule[]}
+     */
+    static fromStrings(ruleString) {
+        if (ruleString !== null && ruleString.length > 0) {
+            ruleString = ruleString.replace("e", Terminal.EPSILON.id);
+            let [inputVariable, outputString] = ruleString.split('->');
+            inputVariable = CFGString.from(inputVariable.trim());
+
+            if (inputVariable.length !== 1 || !(inputVariable[0] instanceof Variable)) {
+                throw new Error(`Input for the rule '${ruleString}' is not of type 'Variable' try using an UPPERCASE letter`);
+            }
+
+            return outputString.split("|")
+                .map(x => CFGString.from(x.trim()))
+                .map(sequence => new Rule(inputVariable[0], sequence));
+        }
+        return [];
+    }
+
+    /**
+     * Parse a {Rule} from a string using the format <Variable> -> <Variable|Terminal>*
+     * @param {String} ruleString
      * @returns {Rule}
      */
     static fromString(ruleString) {
@@ -46,32 +68,9 @@ export default class Rule {
             if (inputVariable.length !== 1 || !(inputVariable[0] instanceof Variable)) {
                 throw new Error(`Input for the rule '${ruleString}' is not of type 'Variable' try using an UPPERCASE letter`);
             }
-
-            let outputs = CFGString.from(outputString.trim())
-
-            return new Rule(inputVariable[0], outputs);
+            return new Rule(inputVariable[0], CFGString.from(outputString.trim()));
         }
         return null;
-    }
-
-    isMixedOutput() {
-        let hasVariable = false;
-        let hasTerminal = false;
-
-        for (let i = 0, len = this.outputList.length; i < len; i++) {
-            if (this.outputList[i] instanceof Variable) {
-                hasVariable = true;
-                if (hasTerminal) {
-                    return true;
-                }
-            } else {
-                hasTerminal = true;
-                if (hasVariable) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     /**

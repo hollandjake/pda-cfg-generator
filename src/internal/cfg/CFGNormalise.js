@@ -3,7 +3,7 @@ import Rule from "./Rule.js";
 import ArrayHelper from "../helper/ArrayHelper.js";
 import ObjectHelper from "../helper/ObjectHelper.js";
 import Terminal from "./Terminal.js";
-import Variable from "./Variable.js";
+import MagicMap from "../helper/MagicMap.js";
 
 export default class CFGNormalise {
     /**
@@ -71,7 +71,6 @@ export default class CFGNormalise {
         let nextVariable = cfg.nextVariable();
         let generatedRules = [new Rule(rule.inputVariable, [rule.outputList[0], nextVariable])];
 
-        //
         for (let i = 1, len = rule.outputList.length - 2; i < len; i++) {
             let nextNextVariable = cfg.nextVariable();
             generatedRules.push(new Rule(
@@ -99,16 +98,16 @@ export default class CFGNormalise {
     }
 
     static replaceTerminals(rules, cfg) {
-        let terminalSwitching = {};
+        let terminalSwitching = new MagicMap();
         let newRules = [];
         rules.forEach(rule => {
-            if (rule.isMixedOutput()) {
+            if (rule.outputList.length > 1) {
                 newRules.push(new Rule(rule.inputVariable, rule.outputList.map(o => {
                     if (o instanceof Terminal) {
-                        if (!terminalSwitching[o.id]) {
-                            terminalSwitching[o.id] = new Rule(cfg.nextVariable(), [o]);
+                        if (!terminalSwitching.has(o)) {
+                            terminalSwitching.set(o, new Rule(cfg.nextVariable(), [o]));
                         }
-                        return terminalSwitching[o.id].inputVariable;
+                        return terminalSwitching.get(o).inputVariable;
                     } else {
                         return o;
                     }
@@ -118,16 +117,8 @@ export default class CFGNormalise {
             }
         })
 
-        for (let k in terminalSwitching) {
-            newRules.push(terminalSwitching[k]);
-        }
+        newRules = newRules.concat(Array.from(terminalSwitching.values()));
 
         return newRules;
-    }
-
-    static newStart(rules, cfg) {
-        let newRules = rules;
-        newRules.push(new Rule(Variable.S0, [Variable.S]));
-        return [newRules, Variable.S0];
     }
 }

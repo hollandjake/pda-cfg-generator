@@ -10,10 +10,10 @@ export default class CFT {
     /**z
      *
      * @param {CFG}cfg
-     * @param {number} depth
+     * @param {number} maxLength
      * @returns {[[Terminal]]}
      */
-    static fromCFG(cfg, depth) {
+    static fromCFG(cfg, maxLength) {
         let rules = cfg.rules;
 
         let variableMappings = new MagicMap();
@@ -22,19 +22,28 @@ export default class CFT {
             variableMappings.set(variable, rules.filter(r => variable.equals(r.inputVariable)).map(r => r.outputList));
         });
 
-        return CFT.dive([[cfg.startVariable]], variableMappings, depth);
+        return CFT.dive([[cfg.startVariable]], variableMappings, maxLength);
     }
 
     /**
-     * @param layer
+     * @param {[[Symbol]]} layer
      * @param variableMappings
-     * @param remainingDepth
+     * @param maxLength
      * @returns {[[Terminal]]}
      */
-    static dive(layer, variableMappings, remainingDepth) {
-        for (let i = remainingDepth; i > 0; i--) {
-            layer = layer
-                .map(sequence => {
+    static dive(layer, variableMappings, maxLength) {
+        let prevLayer;
+        let startTime = performance.now();
+        let maxDuration = maxLength * 1000; // 1 second per length
+
+        main:
+            while (performance.now() - startTime < maxDuration) {
+                prevLayer = layer;
+
+                let newLayer = [];
+                for (let sequence of layer) {
+                    if (performance.now() - startTime > maxDuration) break main;
+
                     let sequenceNewLayer = sequence.map(element => {
                         if (element instanceof Variable) {
                             return variableMappings.get(element);
@@ -43,21 +52,26 @@ export default class CFT {
                         }
                     });
 
-                    return this.expandMapping(sequenceNewLayer);
-                })
-                .flat()
-                .map(sequence => {
-                    let newSequence = sequence.filter(element => !Terminal.EPSILON.equals(element));
-                    if (newSequence.length > 0) {
-                        return newSequence;
-                    } else {
-                        return [Terminal.EPSILON];
-                    }
-                });
-        }
+                    newLayer.push(this.expandMapping(sequenceNewLayer));
+                }
 
-        let array = layer.filter(sequence => !sequence.some(element => element instanceof Variable));
-        return ArrayHelper.distinct(array);
+                layer = ArrayHelper.fast_distinct(newLayer.flat())
+                    .map(sequence => {
+                        let newSequence = sequence.filter(element => !Terminal.EPSILON.equals(element));
+                        if (newSequence.length > 0) {
+                            return newSequence;
+                        } else {
+                            return [Terminal.EPSILON];
+                        }
+                    })
+                    .filter(sequence => sequence.filter(x => x instanceof Terminal).length <= maxLength);
+
+                if (ArrayHelper.equals(prevLayer, layer)) {
+                    break;
+                }
+            }
+
+        return ArrayHelper.fast_distinct(layer).filter(sequence => !sequence.some(element => element instanceof Variable))
     }
 
     /**

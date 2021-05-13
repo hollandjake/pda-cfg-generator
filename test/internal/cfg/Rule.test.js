@@ -53,6 +53,14 @@ test('Can parse string input', () => {
     expect(rule.outputList).toEqual([Terminal.of("a"), Variable.of("A")]);
 })
 
+test('Can parse string input with pipe', () => {
+    let rules = Rule.fromStrings("A->aA | bB");
+    expect(rules).toEqual([
+        Rule.fromString('A->aA'),
+        Rule.fromString('A->bB')
+    ])
+})
+
 test('Returns null when empty string given to string parser', () => {
     expect(Rule.fromString("")).toBe(null);
 })
@@ -91,10 +99,4 @@ test('terminates', () => {
     expect(Rule.fromString('S->a').terminates()).toBeTruthy();
     expect(Rule.fromString('S->A').terminates()).toBeFalsy();
     expect(Rule.fromString('S->A').terminates([Variable.of('A')])).toBeTruthy();
-})
-
-test('isMixedOutput', () => {
-    expect(Rule.fromString('S->aaA').isMixedOutput()).toBeTruthy();
-    expect(Rule.fromString('S->AAa').isMixedOutput()).toBeTruthy();
-    expect(Rule.fromString('S->a').isMixedOutput()).toBeFalsy();
 })
