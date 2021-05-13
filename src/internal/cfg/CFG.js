@@ -44,7 +44,7 @@ export default class CFG {
      * @returns {[[Terminal]]}
      */
     getAcceptingInputs(maxLength = 50) {
-        return CFT.fromCFG(this.normalise(), maxLength).filter(sequence => sequence.length <= maxLength);
+        return CFT.fromCFG(this.normalise(), maxLength + 10).filter(sequence => sequence.length <= maxLength);
     }
 
     get variables() {
