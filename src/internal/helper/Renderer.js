@@ -44,7 +44,7 @@ export default class Renderer {
         html = html.replace(/<title>(.+)<\/title>/g, '<title>&#36;$1&#36;<\/title>');
 
         Object.entries(Subscript.SUBSCRIPTS).forEach(([key, value]) => {
-            html = html.replace(`/${value}/g`, `_{${key}}`);
+            html = html.replace(new RegExp(value, 'g'), `_{${key}}`);
         })
 
         return html;
